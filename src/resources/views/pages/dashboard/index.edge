@@ -1,0 +1,9 @@
+@layout.app({ title: "Dasboard Page" })
+    @slot('main')
+        <h1 class="bg-red-500 text-black">Hello buddys</h1>
+
+        @each(food in foods)
+            <p>{{ food }}</p>
+        @end
+    @endslot
+@end

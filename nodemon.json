@@ -1,0 +1,5 @@
+{
+  "watch": ["src", "public"],
+  "ext": "js,edge,css",
+  "exec": "node src/server.js"
+}

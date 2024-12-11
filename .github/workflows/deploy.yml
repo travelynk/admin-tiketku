@@ -1,0 +1,53 @@
+name: Deploy
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  CD:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Generate Prisma Client
+        run: npx prisma generate
+
+      - name: Authenticate to Google Cloud
+        uses: google-github-actions/auth@v2
+        with:
+          credentials_json: ${{ secrets.GCR_SA_KEY }}
+
+      - name: Set up Google Cloud SDK
+        uses: google-github-actions/setup-gcloud@v2
+        with:
+          project_id: ${{ secrets.GCP_PROJECT_ID }}
+
+      - name: Configure Docker for GCR Authentication
+        run: gcloud auth configure-docker gcr.io
+
+      - name: Build and Push Docker Image
+        run: |
+          IMAGE_NAME=gcr.io/${{ secrets.GCP_PROJECT_ID }}/${{ secrets.CLOUD_RUN_SERVICE_NAME_ADMIN }}
+          docker build -t $IMAGE_NAME .
+          docker push $IMAGE_NAME
+
+      - name: Deploy to Cloud Run
+        run: |
+          gcloud run deploy ${{ secrets.CLOUD_RUN_SERVICE_NAME_ADMIN }} \
+            --image gcr.io/${{ secrets.GCP_PROJECT_ID }}/${{ secrets.CLOUD_RUN_SERVICE_NAME_ADMIN }} \
+            --platform managed \
+            --region asia-southeast1 \
+            --allow-unauthenticated \
+            --set-env-vars API_URL=${{ secrets.API_URL }}

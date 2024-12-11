@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Vite + Express Edge">
+  <title>{{ title }}</title>
+  <link href="/css/app.css" rel="stylesheet">
+</head>
+
+<body>
+  <header>
+    <h1 class="text-2xl">Headers App Pages Coach - {{ title }}</h1>
+  </header>
+  {{{ await $slots.main() }}}
+  <footer class="bg-red-500">
+    <p>Footer</p>
+  </footer>
+</body>
+
+</html>
