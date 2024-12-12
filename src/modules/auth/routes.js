@@ -1,4 +1,4 @@
-import * as AuthController from './auth.controller.js';
+import * as AuthController from './controllers.js';
 
 export default (router) => {
     const prefix = '/auth';

@@ -1,4 +1,4 @@
-import * as DashboardService from './dashboard.service.js';
+import * as DashboardService from './services.js';
 
 export const index = async (req, res, next) => {
     try {

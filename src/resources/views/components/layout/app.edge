@@ -38,8 +38,10 @@
 
   <div class="flex flex-auto">
     @include('components/partials/sidebar')
-    
-    {{{ await $slots.main() }}}
+    <div class="p-6 w-full bg-white">  
+      @!component('components/ui/head-content', { menu })
+      {{{ await $slots.main() }}}
+    </div>
   </div>
   
   @include('components/partials/footer')

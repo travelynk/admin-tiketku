@@ -1,4 +1,4 @@
-import * as DashboardController from './dashboard.controller.js';
+import * as DashboardController from './controllers.js';
 
 export default (router) => {
     const prefix = '/dashboard';

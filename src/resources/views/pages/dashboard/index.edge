@@ -1,46 +1,45 @@
-@layout.app()
+@layout.app({menu: "Dashboard"})
 @slot('main')
-<div class="p-6 w-full bg-white">
-    <!-- Content Head -->
-    @!component('components/ui/head-content', { menu: "Dashboard" })
-    
-    <!-- Content Card -->
-    <div class="mt-5 flex gap-3 justify-between bg-white">
-        @!component('components/ui/dashboard/card', { title: "City/Country", path: "/admin/cities", icon: "cities.svg" , data: "15/5" })
-        @!component('components/ui/dashboard/card', { title: "Airline", path: "/admin/airlines", icon: "airline.svg" , data: "10" })
-        @!component('components/ui/dashboard/card', { title: "Flight", path: "/admin/flights", icon: "flight.svg" , data: "25" })
-    </div>
+<!-- Content Card -->
+<div class="mt-5 flex gap-3 justify-between bg-white">
+    @!component('components/ui/dashboard/card', { title: "City/Country", path: "/admin/cities", icon: "cities.svg" ,
+    data: "15/5" })
+    @!component('components/ui/dashboard/card', { title: "Airline", path: "/admin/airlines", icon: "airline.svg" , data:
+    "10" })
+    @!component('components/ui/dashboard/card', { title: "Flight", path: "/admin/flights", icon: "flight.svg" , data:
+    "25" })
+</div>
 
-    <!-- Content Informasi -->
-    <div class="mt-6 w-full">
-        <div class="px-3 card shadow-md bg-white">
-            <div class="flex my-2 text-brainCore font-bold"> <img class="mr-2" src="/images/icons/flight.svg" width="28px"> <span>Information User</span></div>
-            <div class="flex justify-center">
-                <div class="px-8">
-                    <img class="rounded-full shadow-md border p-2" src="/images/logo.png" width="75px">
-                    <p class="pt-2 text-center text-brainCore font-semibold">fulan</p>
-                    <p class="text-center text-brainCore font-semibold">admin</p>
-                </div>
-                <div class="pb-10">
-                    <table class="table table-auto border-collapse border">
-                        <tr>
-                            <td class="border w-52">Username</td>
-                            <td class="border w-52">Fulan</td>
-                        </tr>
-                        <tr>
-                            <td class="border">Email</td>
-                            <td class="border">fulan@gmail.com</td>
-                        </tr>
-                        <tr>
-                            <td class="border">Gender</td>
-                            <td class="border">Laki</td>
-                        </tr>
-                        <tr>
-                            <td class="border">Phone Number</td>
-                            <td class="border">628</td>
-                        </tr>
-                    </table>
-                </div>
+<!-- Content Informasi -->
+<div class="mt-6 w-full">
+    <div class="px-3 card shadow-md bg-white">
+        <div class="flex my-2 text-brainCore font-bold"> <img class="mr-2" src="/images/icons/flight.svg" width="28px">
+            <span>Information User</span></div>
+        <div class="flex justify-center">
+            <div class="px-8">
+                <img class="rounded-full shadow-md border p-2" src="/images/logo.png" width="75px">
+                <p class="pt-2 text-center text-brainCore font-semibold">fulan</p>
+                <p class="text-center text-brainCore font-semibold">admin</p>
+            </div>
+            <div class="pb-10">
+                <table class="table table-auto border-collapse border">
+                    <tr>
+                        <td class="border w-52">Username</td>
+                        <td class="border w-52">Fulan</td>
+                    </tr>
+                    <tr>
+                        <td class="border">Email</td>
+                        <td class="border">fulan@gmail.com</td>
+                    </tr>
+                    <tr>
+                        <td class="border">Gender</td>
+                        <td class="border">Laki</td>
+                    </tr>
+                    <tr>
+                        <td class="border">Phone Number</td>
+                        <td class="border">628</td>
+                    </tr>
+                </table>
             </div>
         </div>
     </div>
