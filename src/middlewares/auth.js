@@ -1,25 +1,12 @@
 import { res401, res500 } from '../utils/response.js';
-import jwt from 'jsonwebtoken';
 
 const authMiddleware = async (req, res, next) => {
     try {
-        // Extract Authorization header
-        const bearerToken = req.headers.authorization;
-        if (!bearerToken) {
-            return res401('Token expired. Please log in again.', res); 
+        //cek token in local storage
+        const token = req.cookies.token;
+        if (!token) {
+            return res401('Unauthorized', res);
         }
-
-        // Extract token from the header
-        const token = bearerToken.split('Bearer ')[1];
-
-        // Verify the token
-        const decoded = jwt.verify(token, process.env.JWT_SECRET);
-        const payload = {
-            id: decoded.id,
-            role: decoded.role,
-        };
-    
-        req.user = payload;
         next();
     } catch (error) {
         if (error.name === 'TokenExpiredError') {

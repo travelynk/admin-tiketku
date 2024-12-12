@@ -12,5 +12,5 @@ export const handleOther = (err, req, res, next) => {
     res.statusCode = statusCode;
     const code = err.statusCode || 500;
     const message = err.message || "Internal Server Error";
-    res.render('pages/error/index', { code, message });
+    res.edge('pages/error/index', { code, message });
 };

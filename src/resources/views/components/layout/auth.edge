@@ -11,7 +11,10 @@
   <link href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap"
     rel="stylesheet" />
   <link href="/css/app.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.14.5/dist/sweetalert2.min.css" rel="stylesheet">
+
   <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.14.5/dist/sweetalert2.all.min.js"></script>
 </head>
 
 <body class="font-family-karla h-screen relative font-['Nunito']">
@@ -20,6 +23,25 @@
       {{{ await $slots.main() }}}
     </section>
   </main>
+
+  <script>
+    function showToast(type, title, text) {
+      Swal.fire({
+        title: title,
+        text: text,
+        icon: type,
+        toast: true,
+        position: 'bottom-end',
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+          toast.addEventListener('mouseenter', Swal.stopTimer)
+          toast.addEventListener('mouseleave', Swal.resumeTimer)
+        }
+      });
+    }
+  </script>
 </body>
 
 </html>
