@@ -1,7 +1,7 @@
 @layout.app({menu: "Dashboard"})
 @slot('main')
 <!-- Content Card -->
-<div class="mt-5 flex gap-3 justify-between bg-white">
+<div class="flex gap-3 justify-between bg-white">
     @!component('components/ui/dashboard/card', { title: "City/Country", path: "/admin/cities", icon: "cities.svg" ,
     data: "15/5" })
     @!component('components/ui/dashboard/card', { title: "Airline", path: "/admin/airlines", icon: "airline.svg" , data:
