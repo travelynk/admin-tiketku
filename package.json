@@ -22,7 +22,6 @@
     "edge.js": "^6.2.0",
     "express": "^4.21.1",
     "express-list-endpoints": "^7.1.1",
-    "flowbite": "^2.5.2",
     "morgan": "^1.10.0"
   },
   "devDependencies": {
@@ -30,7 +29,6 @@
     "@babel/preset-env": "^7.26.0",
     "@eslint/js": "^9.14.0",
     "concurrently": "^9.1.0",
-    "daisyui": "^4.12.20",
     "dotenv-cli": "^7.4.2",
     "eslint": "^9.14.0",
     "globals": "^15.13.0",
