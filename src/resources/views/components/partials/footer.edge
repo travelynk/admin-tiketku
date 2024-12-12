@@ -1,0 +1,25 @@
+<footer class="footer footer-center p-4 drop-shadow-lg bg-white font-semibold">
+    <p></p>
+  </footer>
+  @include('components/partials/modal')
+  @include('components/partials/toast')
+  
+  <script>
+    function displayCurrentTime() {
+      var currentTime = new Date();
+      var date = currentTime.getDate();
+      var month = currentTime.getMonth()+1;
+      var year = currentTime.getFullYear();
+      var currentHour = currentTime.getHours();
+      var currentMinute = currentTime.getMinutes();
+      var currentSecond = currentTime.getSeconds();
+      $(".footer p").text(
+        `${date}/${month}/${year} ${currentHour}:${currentMinute}:${currentSecond}`
+      );
+    }
+  
+    displayCurrentTime();
+    // Memperbarui waktu setiap detik (1000 milidetik)
+    setInterval(displayCurrentTime, 1000);
+  </script>
+  

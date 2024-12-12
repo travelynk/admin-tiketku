@@ -6,16 +6,21 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="A welcome page made with EdgeJS">
   <title>Document</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap"
+    rel="stylesheet"
+  />
+  <link href="https://cdn.jsdelivr.net/npm/daisyui@4.6.1/dist/full.min.css" rel="stylesheet" type="text/css" />
+  <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+  <link href="/css/app.css" rel="stylesheet">
 </head>
 
-<body>
-  <header>
-    <h1>Header Auth Pages - {{ title }}</h1>
-  </header>
+<body class="font-family-karla h-screen relative font-['Nunito']">
+
   {{{ await $slots.main() }}}
-  <footer>
-    <p>Footer</p>
-  </footer>
+
 </body>
 
 </html>

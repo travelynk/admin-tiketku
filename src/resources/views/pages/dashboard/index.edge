@@ -1,9 +1,80 @@
 @layout.app({ title: "Dasboard Page" })
-    @slot('main')
-        <h1 class="bg-red-500 text-black">Hello buddys</h1>
+@slot('main')
 
-        @each(food in foods)
-            <p>{{ food }}</p>
-        @end
-    @endslot
+<div class="p-6 w-full bg-white">
+    <!-- Content Head -->
+    <div class="flex justify-between">
+        <div>
+            <h1 class="text-2xl text-test font-bold">Dashboard</h1>
+            <p class="text-xs"><a class="text-gray-400" href="/">Home</a> / Dashboard</p>
+        </div>
+        <div class="text-brainCore font-bold">
+            Hi, Fulan, welcome back ✨
+        </div>
+    </div>
+
+    <!-- Content Card -->
+    <div class="mt-5 flex gap-3 justify-between bg-white">
+        <button class="px-3 card w-1/3 shadow-md" onclick="window.location.href = '/mom'">
+            <div class="pt-3">
+              <p class="text-brainCore font-bold">City/Country</p>
+            </div>
+            <div class="py-3">
+                <div class="flex items-center mb-2 font-bold"> <img class="mr-2" src="/images/icons/mom.svg" width="28px"> <span>15/5</span></div>
+            </div>
+        </button>
+        <button class="px-3 card w-1/3 shadow-md" onclick="window.location.href = '/personil'">
+            <div class="pt-3">
+              <p class="text-brainCore font-bold">Airline</p>
+            </div>
+            <div class="py-3">
+                <div class="flex items-center mb-2 font-bold"> <img class="mr-2" src="/images/icons/person.svg" width="28px"> <span>15</span></div>
+            </div>
+        </button>
+        <button class="px-3 card w-1/3 shadow-md" onclick="window.location.href = '/stakeholder'">
+            <div class="pt-3">
+              <p class="text-brainCore font-bold">Flight</p>
+            </div>
+            <div class="py-3">
+                <div class="flex items-center mb-2 font-bold"> <img class="mr-2" src="/images/icons/partner.svg" width="28px"> <span>15</span></div>
+            </div>
+        </button>
+    </div>
+
+    <!-- Content Informasi -->
+    <div class="mt-6 w-full">
+        <div class="px-3 card shadow-md bg-white">
+            <div class="flex my-2 text-brainCore font-bold"> <img class="mr-2" src="/images/icons/flight.svg" width="28px"> <span>Information User</span></div>
+            <div class="flex justify-center">
+                <div class="px-8">
+                    <img class="rounded-full shadow-md border p-2" src="/images/logo.png" width="75px">
+                    <p class="pt-2 text-center text-brainCore font-semibold">fulan</p>
+                    <p class="text-center text-brainCore font-semibold">admin</p>
+                </div>
+                <div class="pb-10">
+                    <table class="table table-auto border-collapse border">
+                        <tr>
+                            <td class="border w-52">Username</td>
+                            <td class="border w-52">Fulan</td>
+                        </tr>
+                        <tr>
+                            <td class="border">Email</td>
+                            <td class="border">fulan@gmail.com</td>
+                        </tr>
+                        <tr>
+                            <td class="border">Gender</td>
+                            <td class="border">Laki</td>
+                        </tr>
+                        <tr>
+                            <td class="border">Phone Number</td>
+                            <td class="border">628</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@endslot
 @end

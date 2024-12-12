@@ -1,0 +1,130 @@
+<div x-show="sidebar" x-transition:enter x-transition:leave class="drop-shadow-md p-4 min-w-52 bg-white">
+  <ul>
+    <li>
+      <a class="flex items-center py-1 px-2 mb-4 hover:bg-gray-200 hover:rounded-md hover:shadow-md transition-all decoration-sky-500 font-bold"
+        href="/admin/dashboard">
+        <img class="mr-4" src="/images/icons/dashboard1.svg" width="28px" />
+        <span>Dashboard</span>
+      </a>
+    </li>
+    <li>
+      <a class="flex items-center py-1 px-2 mb-4 hover:bg-gray-200 hover:rounded-md hover:shadow-md transition-all decoration-sky-500 font-bold"
+        href="/admin/cities">
+        <img class="mr-4" src="/images/icons/cities.svg" width="28px" />
+        <span>Cities</span>
+      </a>
+    </li>
+    <li>
+      <a class="flex items-center py-1 px-2 mb-4 hover:bg-gray-200 hover:rounded-md hover:shadow-md transition-all decoration-sky-500 font-bold"
+        href="/admin/airports">
+        <img class="mr-4" src="/images/icons/airport.svg" width="28px" />
+        <span>Aiports</span>
+      </a>
+    </li>
+    <li>
+      <a class="flex items-center py-1 px-2 mb-4 hover:bg-gray-200 hover:rounded-md hover:shadow-md transition-all decoration-sky-500 font-bold"
+        href="/admin/airlines">
+        <img class="mr-4" src="/images/icons/airline.svg" width="28px" />
+        <span>Airlines</span>
+      </a>
+    </li>
+    <li>
+      <a class="flex items-center py-1 px-2 mb-4 hover:bg-gray-200 hover:rounded-md hover:shadow-md transition-all decoration-sky-500 font-bold"
+        href="/admin/flights">
+        <img class="mr-4" src="/images/icons/flight.svg" width="28px" />
+        <span>Flights</span>
+      </a>
+    </li>
+    <li>
+      <a class="flex items-center py-1 px-2 mb-4 hover:bg-gray-200 hover:rounded-md hover:shadow-md transition-all decoration-sky-500 font-bold"
+        href="/admin/vouchers">
+        <img class="mr-4" src="/images/icons/voucher.svg" width="28px" />
+        <span>Vouchers</span>
+      </a>
+    </li>
+    <li>
+      <button id="btnLogout"
+        class="flex w-full items-center p-1 px-2 mb-4 hover:bg-gray-200 hover:rounded-md hover:shadow-md transition-all decoration-sky-500 text-gray-900 font-bold">
+        <img class="mr-4" src="/images/icons/logout.svg" width="28px" />
+        <span>Logout</span>
+      </button>
+    </li>
+  </ul>
+</div>
+
+<!-- Modal -->
+<div id="ModalOutlog"
+  class="fixed border backdrop-blur-sm left-0 top-0 z-[1055] block h-screen w-screen overflow-y-auto overflow-x-hidden outline-none"
+  style="display: none" tabindex="-1" aria-labelledby="exampleModalComponentsLabel" aria-hidden="true">
+  <div data-te-modal-dialog-ref
+    class="pointer-events-none relative w-auto opacity-100 transition-all ease-in-out min-[576px]:mx-auto min-[576px]:my-7 min-[576px]:max-w-[500px]">
+    <div style="background-color: white"
+      class="min-[576px]:shadow-2xl pointer-events-auto relative flex w-full flex-col rounded-md border-none bg-clip-padding text-current shadow-lg outline-none dark:bg-neutral-600">
+      <div
+        class="flex flex-shrink-0 items-center justify-between rounded-t-md border-b-2 border-neutral-100 border-opacity-100 p-4 dark:border-opacity-50">
+        <h5 style="color: black" class="text-xl font-bold leading-normal dark:text-neutral-200"
+          id="exampleModalComponentsLabel">
+          LOG OUT
+        </h5>
+      </div>
+      <h3 id="msg" class="relative flex-auto p-4" data-te-modal-body-ref></h3>
+      <div
+        class="flex flex-shrink-0 flex-wrap items-center justify-end rounded-b-md border-t-2 border-neutral-100 border-opacity-100 p-4 dark:border-opacity-50">
+        <button id="btnClose" onclick=" modalLO.hide()" type="button"
+          class="inline-block rounded bg-primary-100 px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-primary-700 transition duration-150 ease-in-out hover:bg-primary-accent-100 focus:bg-primary-accent-100 focus:outline-none focus:ring-0 active:bg-primary-accent-200">
+          gak mau.
+        </button>
+        <button id="btnConfirm" type="button"
+          class="ml-1 inline-block rounded text-red-500 font-medium px-6 pb-2 pt-2.5 text-xs uppercase leading-normal shadow-[0_4px_9px_-4px_#3b71ca] transition duration-150 ease-in-out hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:bg-primary-600 focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:outline-none focus:ring-0 active:bg-primary-700 active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)]"
+          data-te-ripple-init data-te-ripple-color="light">
+          iya, udahan.
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  //   let thiss = $(this);
+  let modalLO = $("#ModalOutlog");
+  let Msg = $("#msg");
+  let btnClose = modalLO.find("#btnClose");
+  let btnConfirm = modalLO.find("#btnConfirm");
+
+  var boxLogout = {
+    show: function (msg) {
+      modalLO.fadeIn().addClass("modal-open");
+    },
+    hide: function () {
+      modalLO.fadeOut().removeClass("modal-open");
+      btnConfirm.hide();
+      btnClose.hide();
+    },
+    confirm: function (msg, cRun = false) {
+      Msg.html(msg);
+      btnConfirm.show();
+      btnClose.show();
+      boxLogout.show();
+      btnConfirm.click(function () {
+        cRun(true);
+        boxLogout.hide();
+      });
+      btnClose.click(function () {
+        cRun(false);
+        boxLogout.hide();
+      });
+    },
+  };
+
+  $("#btnLogout").click(function () {
+    boxLogout.confirm(
+      "Yaaah, kok udahan sih? udah nyaman padahal loh 💔",
+      function (response) {
+        if (response) {
+          window.location.replace("/logout");
+          return true;
+        }
+        return false;
+      }
+    );
+  });
+</script>
