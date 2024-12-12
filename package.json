@@ -8,7 +8,7 @@
     "start": "cross-env NODE_ENV=production node ./src/server.js",
     "watch": "cross-env NODE_ENV=development nodemon ./src/server.js",
     "css": "npx tailwindcss -i ./src/resources/css/app.css -o ./public/css/app.css --watch",
-    "dev": "concurrently -k \"pnpm watch\" \"pnpm css\"",
+    "dev": "concurrently -k \"npm run watch\" \"npm run css\"",
     "lint": "eslint ./src",
     "lint:fix": "eslint ./src --fix"
   },
