@@ -140,7 +140,12 @@
 
     // Dengarkan pesan dari popup
     window.addEventListener('message', async (event) => {
-      const { result } = event.data;
+      const { result = null, error = null } = event.data;
+
+      if (error) {
+        return showToast('error', 'Error', error);
+      }
+
       if (result) {
         const data = JSON.parse(result);
         const { token, user } = data;
@@ -167,13 +172,13 @@
             localStorage.setItem('user', JSON.stringify(user));
             showToast('success', 'Success', 'login berhasil');
             setTimeout(() => {
-              //window.location.href = '/admin/dashboard';
+              window.location.href = '/admin/dashboard';
             }, 500);
           })
           .catch((error) => {
             showToast('error', 'Error', error.message);
           })
-      }
+      };
     });
   }
 
