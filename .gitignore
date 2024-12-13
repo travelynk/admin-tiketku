@@ -131,3 +131,4 @@ dist
 
 pnpm-lock.yaml
 package-lock.json
+sa_gcr.json
