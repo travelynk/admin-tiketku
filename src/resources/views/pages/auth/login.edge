@@ -8,7 +8,9 @@
       <div class="self-start hidden lg:flex flex-col text-blue-950">
         <img src="" class="mb-3">
         <h1 class="mb-3 font-bold text-5xl">Hello buddy? Welcome Back</h1>
-        <p class="pr-3">Hard work today is an investment in a brighter future. Don’t be afraid of failure, as every setback is a stepping stone to greater success. When fatigue sets in, remember that all your efforts will pay off, even more than you can imagine.</p>
+        <p class="pr-3">Hard work today is an investment in a brighter future. Don’t be afraid of failure, as every
+          setback is a stepping stone to greater success. When fatigue sets in, remember that all your efforts will pay
+          off, even more than you can imagine.</p>
       </div>
     </div>
     <div
@@ -92,23 +94,33 @@
   }
 
   const oAuthLogin = async () => {
-    const response = await fetch('{{ api }}/auth/google', {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-      },
+    const popupUrl = '{{ api }}/auth/google'; // Endpoint backend untuk memulai OAuth
+    const popup = window.open(popupUrl, '_blank', 'width=600,height=600');
+  
+    if (!popup) {
+      alert('Popup terblokir oleh browser. Harap izinkan popups.');
+      return;
+    }
+  
+    // Dengarkan pesan dari popup
+    window.addEventListener('message', (event) => {
+      //if (!event.origin.includes('http://localhost:5000')) {
+      //  console.warn('Pesan dari sumber tidak dikenal:', event.origin);
+      //  return;
+      //}
+      
+      const { token } = event.data;
+      if (token) {
+        console.log('Token diterima:', token);
+        showToast('success', 'Success', 'OAuth login berhasil');
+        // Simpan token (misalnya di localStorage)
+        localStorage.setItem('token', token);
+        setTimeout(() => {
+          window.location.href = '/admin/dashboard';
+        }, 1000);
+      }
     });
 
-    const result = await response.json();
-    if (result.status.code === 200) {
-      localStorage.setItem('token', result.data.token);
-      showToast('success', 'Success', result.status.message);
-      setTimeout(() => {
-        window.location.href = '/admin/dashboard';
-      }, 1000);
-    } else {
-      showToast('error', 'Error', result.message);
-    }
   }
 
 </script>
