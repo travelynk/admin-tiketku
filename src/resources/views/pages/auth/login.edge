@@ -8,7 +8,9 @@
       <div class="self-start hidden lg:flex flex-col text-blue-950">
         <img src="" class="mb-3">
         <h1 class="mb-3 font-bold text-5xl">Hello buddy? Welcome Back</h1>
-        <p class="pr-3">Hard work today is an investment in a brighter future. Don’t be afraid of failure, as every setback is a stepping stone to greater success. When fatigue sets in, remember that all your efforts will pay off, even more than you can imagine.</p>
+        <p class="pr-3">Hard work today is an investment in a brighter future. Don’t be afraid of failure, as every
+          setback is a stepping stone to greater success. When fatigue sets in, remember that all your efforts will pay
+          off, even more than you can imagine.</p>
       </div>
     </div>
     <div
@@ -81,11 +83,41 @@
 
     const result = await response.json();
     if (result.status.code === 200) {
-      localStorage.setItem('token', result.data.token);
-      showToast('success', 'Success', result.status.message);
-      setTimeout(() => {
-        window.location.href = '/admin/dashboard';
-      }, 1000);
+      const { token, user } = result.data;
+
+      if(user.role !== "admin") {
+        return showToast('error', 'Error', 'Maaf, Anda tidak diizinkan untuk mengakses sumber daya ini.');
+      }
+
+      localStorage.setItem('token', token);
+      localStorage.setItem('user', JSON.stringify(user));
+
+      await fetch('/admin/auth/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          token,
+          user,
+        }),
+      })
+        .then(async (data) => {
+          const response = await data.json();
+
+          if (response.status !== "success") {
+            return showToast('error', 'Error', response.message);
+          }
+
+          showToast('success', 'Success', 'Login berhasil');
+          setTimeout(() => {
+            window.location.href = '/admin/dashboard';
+          }, 500);
+        })
+        .catch((error) => {
+          showToast('error', 'Error', error.message);
+        });
+
     } else {
       showToast('error', 'Error', result.message);
     }
@@ -94,21 +126,55 @@
   const oAuthLogin = async () => {
     const response = await fetch('{{ api }}/auth/google', {
       method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-      },
     });
 
     const result = await response.json();
-    if (result.status.code === 200) {
-      localStorage.setItem('token', result.data.token);
-      showToast('success', 'Success', result.status.message);
-      setTimeout(() => {
-        window.location.href = '/admin/dashboard';
-      }, 1000);
-    } else {
-      showToast('error', 'Error', result.message);
+
+    const popupUrl = result.data; // Endpoint backend untuk memulai OAuth
+    const popup = window.open(popupUrl, '_blank', 'width=600,height=600');
+
+    if (!popup) {
+      showToast('error', 'Error', 'Popup terblokir oleh browser. Harap izinkan popups.');
+      return;
     }
+
+    // Dengarkan pesan dari popup
+    window.addEventListener('message', async (event) => {
+      const { result } = event.data;
+      if (result) {
+        const data = JSON.parse(result);
+        const { token, user } = data;
+        if (!token) {
+          return showToast('error', 'Error', 'Login gagal, akun tidak valid.');
+        }
+
+        if (user.role !== "admin") {
+          return showToast('error', 'Error', 'Maaf, Anda tidak diizinkan untuk mengakses sumber daya ini.');
+        }
+
+        await fetch('/admin/auth/login', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            token,
+            user,
+          }),
+        })
+          .then(() => {
+            localStorage.setItem('token', token);
+            localStorage.setItem('user', JSON.stringify(user));
+            showToast('success', 'Success', 'login berhasil');
+            setTimeout(() => {
+              //window.location.href = '/admin/dashboard';
+            }, 500);
+          })
+          .catch((error) => {
+            showToast('error', 'Error', error.message);
+          })
+      }
+    });
   }
 
 </script>

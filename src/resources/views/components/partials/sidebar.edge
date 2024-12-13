@@ -125,9 +125,18 @@
   $("#btnLogout").click(function () {
     boxLogout.confirm(
       "Yaaah, kok udahan sih? udah nyaman padahal loh 💔",
-      function (response) {
+      async function (response) {
         if (response) {
-          window.location.replace("/logout");
+          const response = await fetch("/admin/auth/logout", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            }
+          });
+          
+          localStorage.removeItem("token");
+          localStorage.removeItem("user");
+          window.location.replace("/admin/auth/login");
           return true;
         }
         return false;
