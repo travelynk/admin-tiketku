@@ -83,44 +83,98 @@
 
     const result = await response.json();
     if (result.status.code === 200) {
-      localStorage.setItem('token', result.data.token);
-      showToast('success', 'Success', result.status.message);
-      setTimeout(() => {
-        window.location.href = '/admin/dashboard';
-      }, 1000);
+      const { token, user } = result.data;
+
+      if(user.role !== "admin") {
+        return showToast('error', 'Error', 'Maaf, Anda tidak diizinkan untuk mengakses sumber daya ini.');
+      }
+
+      localStorage.setItem('token', token);
+      localStorage.setItem('user', JSON.stringify(user));
+
+      await fetch('/admin/auth/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          token,
+          user,
+        }),
+      })
+        .then(async (data) => {
+          const response = await data.json();
+
+          if (response.status !== "success") {
+            return showToast('error', 'Error', response.message);
+          }
+
+          showToast('success', 'Success', 'Login berhasil');
+          setTimeout(() => {
+            window.location.href = '/admin/dashboard';
+          }, 500);
+        })
+        .catch((error) => {
+          showToast('error', 'Error', error.message);
+        });
+
     } else {
       showToast('error', 'Error', result.message);
     }
   }
 
   const oAuthLogin = async () => {
-    const popupUrl = '{{ api }}/auth/google'; // Endpoint backend untuk memulai OAuth
-    const popup = window.open(popupUrl, '_blank', 'width=600,height=600');
-  
-    if (!popup) {
-      alert('Popup terblokir oleh browser. Harap izinkan popups.');
-      return;
-    }
-  
-    // Dengarkan pesan dari popup
-    window.addEventListener('message', (event) => {
-      //if (!event.origin.includes('http://localhost:5000')) {
-      //  console.warn('Pesan dari sumber tidak dikenal:', event.origin);
-      //  return;
-      //}
-      
-      const { token } = event.data;
-      if (token) {
-        console.log('Token diterima:', token);
-        showToast('success', 'Success', 'OAuth login berhasil');
-        // Simpan token (misalnya di localStorage)
-        localStorage.setItem('token', token);
-        setTimeout(() => {
-          window.location.href = '/admin/dashboard';
-        }, 1000);
-      }
+    const response = await fetch('{{ api }}/auth/google', {
+      method: 'GET',
     });
 
+    const result = await response.json();
+
+    const popupUrl = result.data; // Endpoint backend untuk memulai OAuth
+    const popup = window.open(popupUrl, '_blank', 'width=600,height=600');
+
+    if (!popup) {
+      showToast('error', 'Error', 'Popup terblokir oleh browser. Harap izinkan popups.');
+      return;
+    }
+
+    // Dengarkan pesan dari popup
+    window.addEventListener('message', async (event) => {
+      const { result } = event.data;
+      if (result) {
+        const data = JSON.parse(result);
+        const { token, user } = data;
+        if (!token) {
+          return showToast('error', 'Error', 'Login gagal, akun tidak valid.');
+        }
+
+        if (user.role !== "admin") {
+          return showToast('error', 'Error', 'Maaf, Anda tidak diizinkan untuk mengakses sumber daya ini.');
+        }
+
+        await fetch('/admin/auth/login', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            token,
+            user,
+          }),
+        })
+          .then(() => {
+            localStorage.setItem('token', token);
+            localStorage.setItem('user', JSON.stringify(user));
+            showToast('success', 'Success', 'login berhasil');
+            setTimeout(() => {
+              //window.location.href = '/admin/dashboard';
+            }, 500);
+          })
+          .catch((error) => {
+            showToast('error', 'Error', error.message);
+          })
+      }
+    });
   }
 
 </script>
