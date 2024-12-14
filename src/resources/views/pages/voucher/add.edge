@@ -1,0 +1,126 @@
+@layout.app({ menu: "Tambah Voucher" })
+@slot('main')
+
+<div class="p-4">
+    <form id="voucherForm" class="space-y-4">
+        <div>
+            <label for="code" class="block text-sm font-medium text-gray-700">Kode Voucher</label>
+            <input type="text" id="code" name="code"
+                class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                required>
+        </div>
+
+        <div>
+            <label for="type" class="block text-sm font-medium text-gray-700">Tipe Voucher</label>
+            <select id="type" name="type"
+                class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                required>
+                <option value="Percentage">Percentage</option>
+                <option value="Fixed">Fixed</option>
+            </select>
+        </div>
+
+        <div>
+            <label for="value" class="block text-sm font-medium text-gray-700">Nilai Voucher</label>
+            <input type="number" id="value" name="value"
+                class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                required>
+        </div>
+
+        <div>
+            <label for="minPurchase" class="block text-sm font-medium text-gray-700">Pembelian Minimum</label>
+            <input type="number" id="minPurchase" name="minPurchase"
+                class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                required>
+        </div>
+
+        <div>
+            <label for="maxVoucher" class="block text-sm font-medium text-gray-700">Max Voucher</label>
+            <input type="number" id="maxVoucher" name="maxVoucher"
+                class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                required>
+        </div>
+
+        <div>
+            <label for="startDate" class="block text-sm font-medium text-gray-700">Tanggal Mulai</label>
+            <input type="date" id="startDate" name="startDate"
+                class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                required>
+        </div>
+
+        <div>
+            <label for="endDate" class="block text-sm font-medium text-gray-700">Tanggal Berakhir</label>
+            <input type="date" id="endDate" name="endDate"
+                class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                required>
+        </div>
+
+        <div>
+            <button type="submit" class="bg-green-500 text-white py-2 px-4 rounded hover:bg-green-600">Save</button>
+        </div>
+    </form>
+</div>
+
+<script>
+    const addVoucher = async (data) => {
+        try {
+            const endpoint = `{{ apiUrl }}/api/v1/vouchers`;
+
+            console.log(endpoint);
+
+            console.log('asem')
+
+            const response = await fetch(endpoint, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data),
+            });
+
+            if (!response.ok) {
+                console.log('here');
+                const errorData = await response.json();
+                throw new Error(errorData.message || 'Gagal menambahkan voucher.');
+            }
+
+            const voucher = await response.json();
+
+            showToast('success', 'Berhasil', 'Voucher berhasil ditambahkan.');
+            return voucher;
+
+        } catch (error) {
+            showToast('error', 'Error', error.message || 'Terjadi kesalahan saat menambahkan voucher.');
+            throw error;
+        }
+    };
+
+    document.getElementById('voucherForm').addEventListener('submit', async (e) => {
+        e.preventDefault(); // Prevent default form submission
+
+        const formData = {
+            code: document.getElementById('code').value,
+            type: document.getElementById('type').value,
+            value: parseFloat(document.getElementById('value').value),
+            minPurchase: parseFloat(document.getElementById('minPurchase').value),
+            maxVoucher: parseFloat(document.getElementById('maxVoucher').value),
+            startDate: document.getElementById('startDate').value,
+            endDate: document.getElementById('endDate').value,
+        };
+
+        console.log(formData);
+
+        try {
+            await addVoucher(formData);
+            setTimeout(() => {
+                window.location.href = '/admin/vouchers'; // Redirect to vouchers list page
+            }, 500);
+        } catch (error) {
+            console.error(error); // Log error for debugging
+        }
+    });
+</script>
+
+
+@endslot
+@end
