@@ -5,7 +5,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="Vite + Express Edge">
-  <title>{{ title }}</title>
+  <title>Tiketku - {{ menu }}</title>
   <!-- Font -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -13,58 +13,76 @@
     rel="stylesheet">
 
   <link href="/css/app.css" rel="stylesheet">
-  <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
   <link href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.css" rel="stylesheet" />
   <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.14.5/dist/sweetalert2.min.css" rel="stylesheet">
 
-  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.14.5/dist/sweetalert2.all.min.js"></script>
   <script src="https://unpkg.com/alpinejs" defer></script>
-  <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+  <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.14.5/dist/sweetalert2.all.min.js"></script>
   <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.js"></script>
+
 </head>
 
-<body class="bg-gray-900 text-gray-800 flex flex-col justify-between h-screen">
+<body class="bg-gray-900 text-gray-800 flex flex-col h-screen">
+  <!-- Header -->
   @include('components/partials/header')
 
-  <div class="flex flex-auto">
+  <!-- Content Wrapper -->
+  <div class="flex flex-auto overflow-hidden">
+    <!-- Sidebar -->
     @include('components/partials/sidebar')
-    <div class="p-4 w-full bg-white">
-      @!component('components/ui/head-content', { menu })
-      {{{ await $slots.main() }}}
+
+    <!-- Main Content -->
+    <div class="flex flex-col w-full p-4 bg-white overflow-hidden">
+      <!-- Content Header -->
+      <div class="flex-none">
+        @!component('components/ui/head-content', { menu, sub })
+      </div>
+
+      <!-- Scrollable Content -->
+      <div class="flex-1 overflow-y-auto pr-4">
+        {{{ await $slots.main() }}}
+      </div>
     </div>
   </div>
 
+  <!-- Footer -->
   @include('components/partials/footer')
+
+  <script type="module">
+    import preline from '/js/preline-esm.js'
+  </script>
+
+  <script>
+    function showToast(type, title, text) {
+      Swal.fire({
+        title: title,
+        text: text,
+        icon: type,
+        toast: true,
+        position: 'bottom-end',
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+          toast.addEventListener('mouseenter', Swal.stopTimer)
+          toast.addEventListener('mouseleave', Swal.resumeTimer)
+        }
+      });
+    };
+
+    // cek data user di local storage
+    let user = localStorage.getItem('user');
+    if (user) {
+      user = JSON.parse(user);
+      document.querySelector('.headerUsername').innerText = user.name;
+      document.querySelector('.headerContentUsername').innerText = user.name;
+    }
+
+    // set data table default
+    new DataTable('.myTable');
+
+  </script>
 </body>
-
-<script>
-  function showToast(type, title, text) {
-    Swal.fire({
-      title: title,
-      text: text,
-      icon: type,
-      toast: true,
-      position: 'bottom-end',
-      showConfirmButton: false,
-      timer: 3000,
-      timerProgressBar: true,
-      didOpen: (toast) => {
-        toast.addEventListener('mouseenter', Swal.stopTimer)
-        toast.addEventListener('mouseleave', Swal.resumeTimer)
-      }
-    });
-  }
-
-  // cek data user di local storage
-  let user = localStorage.getItem('user');
-  if (user) {
-    user = JSON.parse(user);
-    document.querySelector('.headerUsername').innerText = user.name;
-    document.querySelector('.headerContentUsername').innerText = user.name;
-    
-  }
-
-</script>
 
 </html>

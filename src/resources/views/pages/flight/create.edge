@@ -1,0 +1,205 @@
+@layout.app({ menu: title, sub })
+@slot('main')
+
+<div>
+    <form>
+        <div class="space-y-12">
+          <div class="border-b border-gray-900/10 pb-6">
+            <div class="mt-3 grid grid-cols-1 gap-x-6 gap-y-4 sm:grid-cols-6">
+              <div class="sm:col-span-3">
+                <label for="first-name" class="block text-sm/6 font-medium text-gray-900">Airline</label>
+                <div class="mt-1">
+                  @!component('components/ui/flight/select-airline', { id: "select-airline", name: "airline", airlines })
+                </div>
+              </div>
+
+              <div class="sm:col-span-3">
+                <label for="flight-number" class="block text-sm/6 font-medium text-gray-900">Flight Number</label>
+                <div class="mt-1">
+                  <input type="text" name="flight-number" id="flight-number" autocomplete="flight-number" class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6">
+                </div>
+              </div>
+
+              <div class="sm:col-span-3">
+                <label for="first-name" class="block text-sm/6 font-medium text-gray-900">Departure Terminal</label>
+                <div class="mt-1">
+                    @!component('components/ui/flight/select-terminal', { id: "select-departure-terminal", name: "terminal", terminals })
+                </div>
+              </div>
+      
+              <div class="sm:col-span-3">
+                <label for="flight-number" class="block text-sm/6 font-medium text-gray-900">Arrival Terminal</label>
+                <div class="mt-1">
+                    @!component('components/ui/flight/select-terminal', { id: "select-arrival-terminal", name: "terminal", terminals })
+                </div>
+              </div>
+
+              <div class="sm:col-span-2 sm:col-start-1">
+                <label for="departure-time" class="block text-sm/6 font-medium text-gray-900">Departure Time</label>
+                <div class="mt-1">
+                  <input type="datetime-local" name="departure-time" id="departure-time" autocomplete="departure-time" class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6">
+                </div>
+              </div>
+      
+              <div class="sm:col-span-2">
+                <label for="arrival-time" class="block text-sm/6 font-medium text-gray-900">Arrival Time</label>
+                <div class="mt-1">
+                  <input type="datetime-local" name="arrival-time" id="arrival-time" autocomplete="arrival-time" class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6">
+                </div>
+              </div>
+      
+              <div class="sm:col-span-2">
+                <label for="estimated-duration" class="block text-sm/6 font-medium text-gray-900">Estimated Duration</label>
+                <div class="mt-1">
+                  <input type="text" readonly name="estimated-duration" id="estimated-duration" autocomplete="estimated-duration" class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6">
+                </div>
+              </div>
+
+              <div class="sm:col-span-2 sm:col-start-1">
+                <label for="select-seatclass" class="block text-sm/6 font-medium text-gray-900">Seat Class</label>
+                <div class="mt-1">
+                  @!component('components/ui/flight/select-seat-class', { id: "select-seatclass", name: "seatClass" })
+                </div>
+              </div>
+
+              <div class="sm:col-span-2">
+                <label for="seat-capacity" class="block text-sm/6 font-medium text-gray-900">Seat Capacity</label>
+                <div class="mt-1">
+                  <input type="number" name="seat-capacity" id="seat-capacity" autocomplete="seat-capacity" class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6">
+                </div>
+              </div>
+
+              <div class="sm:col-span-2">
+                <label for="price" class="block text-sm/6 font-medium text-gray-900">Price</label>
+                <div class="mt-1">
+                  <input type="number" name="price" id="price" autocomplete="price" class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6">
+                </div>
+              </div>
+
+              <div class="col-span-full">
+                <label for="facility" class="block text-sm/6 font-medium text-gray-900">Facility</label>
+                <div class="mt-1">
+                  <textarea name="facility" id="facility" class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"></textarea>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+        </div>
+      
+        <div class="my-5 flex items-center justify-end gap-x-6">
+          <button type="button" class="rounded-md hover:bg-gray-200 px-3 py-2 text-sm font-semibold text-black shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-300" onclick="window.history.back()">Cancel</button>
+          <button type="button" onclick="store()" class="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Save</button>
+        </div>
+      </form>
+</div>
+
+<script>
+  // Get airline code to display in flight number input
+  document.getElementById('select-airline').addEventListener('change', function(){
+    const flightNumber = document.getElementById('flight-number');
+    const selectedText = this.options[this.selectedIndex].text;
+    const codeAirline = selectedText.split(' - ')[0];
+    
+    flightNumber.value = codeAirline;
+  });
+
+  // Check if flight number is same with airline code
+  document.getElementById('flight-number').addEventListener('change', function(){
+    const selectAirline = document.getElementById('select-airline');
+    const selectedText = selectAirline.options[selectAirline.selectedIndex].text;
+    const codeAirline = selectedText.split(' - ')[0];
+    
+    // get 2 caracter from flight number
+    const codeFlightInFlightNumber = this.value.substring(0, 2);
+
+    if(codeFlightInFlightNumber != codeAirline){
+      showToast('error', "Error", 'Maaf, nomor penerbangan tidak sesuai dengan kode maskapai yang dipilih');
+    }
+
+    // cek if flight number after 2 character is 4 digit number (output must like AF2001)
+    const numberFlightInFlightNumber = this.value.substring(2, this.value.length);
+    
+    if(numberFlightInFlightNumber.length !== 4 || isNaN(numberFlightInFlightNumber)){
+      showToast('error', "Error", 'Maaf, nomor penerbangan tidak sesuai dengan format. Contoh: AF2001');
+    }
+
+  });
+
+  // Change estimated duration from deviation arrival time and departure time
+  document.getElementById('arrival-time').addEventListener('change', function(){
+    const arrivalTime = new Date(this.value);
+    const departureTime = new Date(document.getElementById('departure-time').value);
+
+    if(arrivalTime < departureTime){
+      showToast('error', "Error", 'Maaf, waktu kedatangan tidak boleh lebih kecil dari waktu keberangkatan');
+    }
+
+    const diff = arrivalTime - departureTime;
+    let diffInHours = diff / 1000 / 60 / 60;
+    
+    // round up to 2 decimal
+    diffInHours = Math.round(diffInHours * 100) / 100;
+
+    document.getElementById('estimated-duration').value = diffInHours;
+  });
+
+  // Check seat capacity must be more than 50
+  document.getElementById('seat-capacity').addEventListener('change', function(){
+    if(this.value < 70){
+      showToast('error', "Error", 'Maaf, kapasitas kursi minimal 50');
+    }
+  });
+
+  // Store data
+  const store = async () => {
+    let flightNum = document.getElementById('flight-number').value;
+    let airlineId = document.getElementById('select-airline').value;
+    let departureTerminalId = document.getElementById('select-departure-terminal').value;
+    let arrivalTerminalId = document.getElementById('select-arrival-terminal').value;
+    let departureTime = document.getElementById('departure-time').value;
+    let arrivalTime = document.getElementById('arrival-time').value;
+    let estimatedDuration = document.getElementById('estimated-duration').value;
+    let seatClass = document.getElementById('select-seatclass').value;
+    let seatCapacity = document.getElementById('seat-capacity').value;
+    let price = document.getElementById('price').value;
+    let facility = document.getElementById('facility').value;
+
+    let data = {
+      flightNum,
+      airlineId: parseInt(airlineId),
+      departureTerminalId: parseInt(departureTerminalId),
+      arrivalTerminalId: parseInt(arrivalTerminalId),
+      departureTime,
+      arrivalTime,
+      estimatedDuration: parseFloat(estimatedDuration),
+      seatClass,
+      seatCapacity: parseInt(seatCapacity),
+      price: parseInt(price),
+      facility
+    }
+
+    const response = await fetch('{{ api }}/api/v1/flights', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + localStorage.getItem('token')
+      },
+      body: JSON.stringify(data),
+    })
+
+    if(response.status == 201){
+      showToast('success', "Success", 'Data berhasil disimpan');
+      window.location.href = '/flights';
+    }else{
+      const result =  await response.json();
+      showToast('error', "Error", result.message);
+    }
+    
+  }
+
+</script>
+
+@endslot
+@end

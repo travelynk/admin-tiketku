@@ -1,8 +1,48 @@
-@layout.app({ menu: "Flight"})
+@layout.app({ menu: title})
 @slot('main')
 
 <div>
-    {{ title }}
+    <div class="mb-5">
+        <a href="/admin/flights/create" class="w-fit flex items-center gap-2 py-1 pl-2 pr-3 rounded-lg hover:bg-green-200 text-green-600">
+            <img src="/images/icons/add.svg" alt="trash-icon">
+            <span>Add</span>
+        </a>
+    </div>
+    <table class="myTable display" style="width:100%">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Fligh Num</th>
+                <th>Airline</th>
+                <th>Departure City</th>
+                <th>Arrival City</th>
+                <th>Departure Time</th>
+                <th>Arrival Time</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @each(flight in flights)
+            <tr>
+                <td>{{ flight.flightId }}</td>
+                <td>{{ flight.flightNum }}</td>
+                <td>{{ flight.airline.name }}</td>
+                <td>{{ flight.departure.city.code }}</td>
+                <td>{{ flight.arrival.city.code }}</td>
+                <td>{{ flight.departure.schedule }}</td>
+                <td>{{ flight.arrival.schedule }}</td>
+                <td class="flex gap-2">
+                    <a href="/admin/flights/edit/{{ flight.flightId }}" class="rounded">
+                        <img src="/images/icons/edit.svg" alt="trash-icon" class="p-1 rounded-xl hover:bg-blue-200">
+                    </a>
+                    <a href="/admin/flights/delete/{{ flight.flightId }}">
+                        <img src="/images/icons/trash.svg" alt="trash-icon" class="p-1 rounded-xl hover:bg-red-200">
+                    </a>
+                </td>
+            </tr>
+            @end
+
+    </table>
 </div>
 
 @endslot
