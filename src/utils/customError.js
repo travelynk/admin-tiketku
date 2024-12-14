@@ -42,3 +42,12 @@ export class Error409 extends Error {
         this.name = 'Conflict';
     }
 }
+
+export class ErrorCustom extends Error {
+    constructor(message, statusCode = 500) {
+        super(message);
+        this.status = false;
+        this.statusCode = statusCode;
+        this.name = 'CustomError';
+    }
+}
