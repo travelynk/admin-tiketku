@@ -3,7 +3,8 @@
 
 <div>
     <div class="mb-5">
-        <a href="/admin/flights/create" class="w-fit flex items-center gap-2 py-1 pl-2 pr-3 rounded-lg hover:bg-green-200 text-green-600">
+        <a href="/admin/flights/create"
+            class="w-fit flex items-center gap-2 py-1 pl-2 pr-3 rounded-lg hover:bg-green-200 text-green-600">
             <img src="/images/icons/add.svg" alt="trash-icon">
             <span>Add</span>
         </a>
@@ -32,18 +33,51 @@
                 <td>{{ flight.departure.schedule }}</td>
                 <td>{{ flight.arrival.schedule }}</td>
                 <td class="flex gap-2">
-                    <a href="/admin/flights/edit/{{ flight.id }}" class="rounded">
+                    <button onclick="window.location.href='/admin/flights/edit/{{ flight.id }}'" class="rounded">
                         <img src="/images/icons/edit.svg" alt="trash-icon" class="p-1 rounded-xl hover:bg-blue-200">
-                    </a>
-                    <a href="/admin/flights/delete/{{ flight.id }}">
+                    </button>
+                    <button onclick="destroy({{ flight.id }})" class="rounded">
                         <img src="/images/icons/trash.svg" alt="trash-icon" class="p-1 rounded-xl hover:bg-red-200">
-                    </a>
+                    </button>
                 </td>
             </tr>
             @end
 
     </table>
 </div>
+
+<script>
+    function destroy(id) {
+        Swal.fire({
+            title: 'Kamu yakin ingin menghapus data penerbangan ini?',
+            text: "Kamu tidak akan bisa mebatalkan tindakan ini!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Ya, hapus penerbangan!',
+            cancelButtonText: 'Batal'
+        }).then(async (result) => {
+            if (result.isConfirmed) {
+                const response = await fetch('{{ api }}/api/v1/flights/' + id, {
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Bearer ' + localStorage.getItem('token')
+                    }
+                })
+
+                if (response.status == 200) {
+                    showToast('success', "Success", 'Data penerbangan berhasil dihapus');
+                    window.location.href = '/admin/flights';
+                } else {
+                    const result = await response.json();
+                    showToast('error', "Error", result.message);
+                }
+            }
+        })
+    }
+</script>
 
 @endslot
 @end

@@ -18,8 +18,16 @@ export const index = async (req, res, next) => {
                 }
             }
         });
+
+        const api = process.env.API_URL;
+
+        const data = {
+            title: "Flight",
+            flights,
+            api
+        }
         
-        res.edge('pages/flight/index', { title: "Flight", flights });
+        res.edge('pages/flight/index', data);
     } catch (error) {
         next(error)
     }
