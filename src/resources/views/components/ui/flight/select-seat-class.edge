@@ -8,8 +8,8 @@
     "extraMarkup": "<div class=\"absolute top-1/2 end-3 -translate-y-1/2\"><svg class=\"shrink-0 size-3.5 text-gray-500 \" xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"m7 15 5 5 5-5\"/><path d=\"m7 9 5-5 5 5\"/></svg></div>"
   }' class="hidden">
     <option value="">Choose</option>
-    <option value="Economy">Economy</option>
-    <option value="Premium Economy">Premium Economy</option>
-    <option value="Business">Business</option>
-    <option value="First Class">First Class</option>
+    <option value="Economy" {{ selectedItem == "Economy" ? "Selected" : "" }}>Economy</option>
+    <option value="Premium Economy" {{ selectedItem == "Premium Economy" ? "Selected" : "" }}>Premium Economy</option>
+    <option value="Business" {{ selectedItem == "Business" ? "Selected" : "" }}>Business</option>
+    <option value="First Class" {{ selectedItem == "First Class" ? "Selected" : "" }}>First Class</option>
 </select>
