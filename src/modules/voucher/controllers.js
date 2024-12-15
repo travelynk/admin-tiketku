@@ -22,8 +22,8 @@ export const add = async (req, res, next) => {
 export const edit = async (req, res, next) => {
     try {
         const apiUrl = process.env.API_URL
-        const { code } = req.params;
-        const response = await VoucherService.getVoucherById(code);
+        const { id } = req.params;
+        const response = await VoucherService.getVoucherById(id);
         const data = await response.data;
         res.edge('pages/voucher/edit', { data , apiUrl});
     } catch (error) {

@@ -17,19 +17,14 @@ export const getAllVouchers = async () => {
     return vouchers;
 };
 
-export const getVoucherById = async (code) => {
-    const endpoint = `${process.env.API_URL}/api/v1/vouchers/${code}`;
-
-    const data = {
-        totalPrice: 5000000,
-    };
+export const getVoucherById = async (id) => {
+    const endpoint = `${process.env.API_URL}/api/v1/vouchers/${id}`;
 
     const response = await fetch(endpoint, {
-        method: 'POST',
+        method: 'GET',
         headers: {
             'Content-Type': 'application/json',
         },
-        body: JSON.stringify(data)
     });
 
     if (!response.ok) {
