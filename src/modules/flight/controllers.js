@@ -14,13 +14,15 @@ export const index = async (req, res, next) => {
 export const create = async (req, res, next) => {
     try {
         const terminals = await FlightService.getTerminalWithAirport();
-
-
+        const airlines = await FlightService.getAirline();
+        const api = process.env.API_URL;
 
         const data = { 
             title: "Flight", 
             sub: "Create",
-            terminals
+            airlines,
+            terminals,
+            api
         }
 
         res.edge('pages/flight/create', data);

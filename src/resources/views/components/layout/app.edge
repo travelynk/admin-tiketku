@@ -54,8 +54,6 @@
   </script>
 
   <script>
-
-
     function showToast(type, title, text) {
       Swal.fire({
         title: title,
@@ -71,7 +69,7 @@
           toast.addEventListener('mouseleave', Swal.resumeTimer)
         }
       });
-    }
+    };
 
     // cek data user di local storage
     let user = localStorage.getItem('user');

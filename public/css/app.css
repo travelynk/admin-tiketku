@@ -730,6 +730,21 @@ video {
   margin-bottom: 0.5rem;
 }
 
+.mx-1 {
+  margin-left: 0.25rem;
+  margin-right: 0.25rem;
+}
+
+.my-6 {
+  margin-top: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.my-5 {
+  margin-top: 1.25rem;
+  margin-bottom: 1.25rem;
+}
+
 .\!me-1 {
   margin-inline-end: 0.25rem !important;
 }
@@ -808,6 +823,14 @@ video {
 
 .mt-7 {
   margin-top: 1.75rem;
+}
+
+.me-2 {
+  margin-inline-end: 0.5rem;
+}
+
+.mt-3 {
+  margin-top: 0.75rem;
 }
 
 .block {
@@ -1136,6 +1159,18 @@ video {
   row-gap: 2rem;
 }
 
+.gap-y-6 {
+  row-gap: 1.5rem;
+}
+
+.gap-y-5 {
+  row-gap: 1.25rem;
+}
+
+.gap-y-4 {
+  row-gap: 1rem;
+}
+
 .space-y-0\.5 > :not([hidden]) ~ :not([hidden]) {
   --tw-space-y-reverse: 0;
   margin-top: calc(0.125rem * calc(1 - var(--tw-space-y-reverse)));
@@ -1313,6 +1348,11 @@ video {
 
 .border-transparent {
   border-color: transparent;
+}
+
+.border-gray-100 {
+  --tw-border-opacity: 1;
+  border-color: rgb(243 244 246 / var(--tw-border-opacity, 1));
 }
 
 .border-t-transparent {
@@ -1582,6 +1622,10 @@ video {
 
 .pt-3 {
   padding-top: 0.75rem;
+}
+
+.pb-6 {
+  padding-bottom: 1.5rem;
 }
 
 .text-left {
@@ -2192,6 +2236,10 @@ video {
 
 .focus-visible\:outline-indigo-600:focus-visible {
   outline-color: #4f46e5;
+}
+
+.focus-visible\:outline-gray-300:focus-visible {
+  outline-color: #d1d5db;
 }
 
 .active\:shadow-\[0_8px_9px_-4px_rgba\(59\2c 113\2c 202\2c 0\.3\)\2c 0_4px_18px_0_rgba\(59\2c 113\2c 202\2c 0\.2\)\]:active {
