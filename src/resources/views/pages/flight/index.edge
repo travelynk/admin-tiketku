@@ -11,7 +11,7 @@
     <table class="myTable display" style="width:100%">
         <thead>
             <tr>
-                <th>ID</th>
+                <th>No</th>
                 <th>Fligh Num</th>
                 <th>Airline</th>
                 <th>Departure City</th>
@@ -22,9 +22,9 @@
             </tr>
         </thead>
         <tbody>
-            @each(flight in flights)
+            @each((flight, index) in flights)
             <tr>
-                <td>{{ flight.flightId }}</td>
+                <td>{{ index + 1 }}</td>
                 <td>{{ flight.flightNum }}</td>
                 <td>{{ flight.airline.name }}</td>
                 <td>{{ flight.departure.city.code }}</td>
@@ -32,10 +32,10 @@
                 <td>{{ flight.departure.schedule }}</td>
                 <td>{{ flight.arrival.schedule }}</td>
                 <td class="flex gap-2">
-                    <a href="/admin/flights/edit/{{ flight.flightId }}" class="rounded">
+                    <a href="/admin/flights/edit/{{ flight.id }}" class="rounded">
                         <img src="/images/icons/edit.svg" alt="trash-icon" class="p-1 rounded-xl hover:bg-blue-200">
                     </a>
-                    <a href="/admin/flights/delete/{{ flight.flightId }}">
+                    <a href="/admin/flights/delete/{{ flight.id }}">
                         <img src="/images/icons/trash.svg" alt="trash-icon" class="p-1 rounded-xl hover:bg-red-200">
                     </a>
                 </td>

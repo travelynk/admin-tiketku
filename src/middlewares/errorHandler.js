@@ -8,6 +8,11 @@ export const handleOther = (err, req, res, next) => {
     if (!err) {
         return next(); 
     }
+
+    if(process.env.NODE_ENV === 'development') {
+        console.log(err);
+    }
+
     const statusCode = err.statusCode || 500;
     res.statusCode = statusCode;
     const code = err.statusCode || 500;

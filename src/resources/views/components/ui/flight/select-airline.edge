@@ -13,7 +13,7 @@
   }' class="hidden">
     <option value="">Choose</option>
     @each(airline in airlines)
-    <option value="{{ airline.id }}">
+    <option value="{{ airline.id }}" {{ airline.id == selectedItem ? 'selected' : '' }}>
       {{ `${airline.code} - ${airline.name}` }}
     </option>
     @end
