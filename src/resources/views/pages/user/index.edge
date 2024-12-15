@@ -2,8 +2,77 @@
 @slot('main')
 
 <div>
-    {{ title }}
+    <table class="myTable display" style="width:100%">
+        <thead>
+            <tr>
+                <th>No</th>
+                <th>Email</th>
+                <th>Name</th>
+                <th>Phone</th>
+                <th>Role</th>
+                <th>Verified</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @each((user, index) in users)
+            <tr>
+                <td>{{ index + 1 }}</td>
+                <td>{{ user.email }}</td>
+                <td>{{ user.profile.fullName }}</td>
+                <td>{{ user.profile.phone }}</td>
+                <td>{{ user.role }}</td>
+                <td>{{ user.verified ? "✅" : "❌" }}</td>
+                <td class="flex gap-2">
+                    <button onclick="updateRole('{{ user.id }}', '{{ user.profile.fullName }}', '{{ user.role }}')"
+                        class="py-1 px-2 rounded-lg flex gap-2 items-center text-sm hover:bg-blue-200">
+                        <img src="/images/icons/edit.svg" alt="trash-icon">
+                        <span>Change Role</span>
+                    </button>
+                </td>
+            </tr>
+            @end
+    </table>
 </div>
+
+<script>
+    const updateRole = (id, name, role) => {
+        const newRole = role === "admin" ? "buyer" : "admin";
+
+        Swal.fire({
+            title: `Kamu yakin ingin mengubah role ${ name} menjadi ${newRole}?`,
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Ya, ubah!',
+            cancelButtonText: 'Batal'
+        }).then(async (result) => {
+            if (result.isConfirmed) {
+                const data = { role: newRole };
+
+                const response = await fetch(`{{ api }}/api/v1/users/${id}`, {
+                    method: "PATCH",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": `Bearer ${localStorage.getItem('token')}`
+                    },
+                    body: JSON.stringify(data)
+                });
+
+                if (response.status == 200) {
+                    showToast('success', "Success", `Berhasil mengubah role ${name}`);
+                    setTimeout(() => {
+                        window.location.reload();
+                    }, 1000);
+                } else {
+                    const result = await response.json();
+                    showToast('error', "Error", result.message);
+                }
+            }
+        })
+    }
+</script>
 
 @endslot
 @end
