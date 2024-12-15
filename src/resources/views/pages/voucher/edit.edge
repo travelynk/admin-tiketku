@@ -1,0 +1,119 @@
+@layout.app({ menu: "Ubah Voucher" })
+@slot('main')
+
+<div class="p-4">
+    <form action="/admin/vouchers/edit/{{ data.code }}" method="POST" class="space-y-4">
+        <div>
+            <label for="code" class="block text-sm font-medium text-gray-700">Kode Voucher</label>
+            <input type="text" id="code" value="{{ data.code }}"
+                class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                readonly>
+        </div>
+
+        <div>
+            <label for="type" class="block text-sm font-medium text-gray-700">Tipe Voucher</label>
+            <select id="type" name="type"
+                class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                required>
+                <option value="Percentage" {{ data.type==='Percentage' ? 'selected' : '' }}>Percentage</option>
+                <option value="Fixed" {{ data.type==='Fixed' ? 'selected' : '' }}>Fixed</option>
+            </select>
+        </div>
+
+        <div>
+            <label for="value" class="block text-sm font-medium text-gray-700">Nilai Voucher</label>
+            <input type="number" id="value" name="value" value="{{ data.value }}"
+                class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                required step="any">
+        </div>
+
+        <div>
+            <label for="minPurchase" class="block text-sm font-medium text-gray-700">Pembelian Minimum</label>
+            <input type="number" id="minPurchase" name="minPurchase" value="{{ data.minPurchase }}"
+                class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                required>
+        </div>
+
+        <div>
+            <label for="maxVoucher" class="block text-sm font-medium text-gray-700">Maksimal Voucher</label>
+            <input type="number" id="maxVoucher" name="maxVoucher" value="{{ data.maxVoucher }}"
+                class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                required>
+        </div>
+
+        <div>
+            <label for="startDate" class="block text-sm font-medium text-gray-700">Tanggal Mulai</label>
+            <input type="date" id="startDate" name="startDate"
+                value="{{ new Date(data.startDate).toISOString().split('T')[0] }}"
+                class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                required>
+        </div>
+
+        <div>
+            <label for="endDate" class="block text-sm font-medium text-gray-700">Tanggal Berakhir</label>
+            <input type="date" id="endDate" name="endDate"
+                value="{{ new Date(data.endDate).toISOString().split('T')[0] }}"
+                class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                required>
+        </div>
+
+        <div>
+            <button type="submit" class="bg-yellow-500 text-white py-2 px-4 rounded hover:bg-yellow-600">Simpan</button>
+        </div>
+    </form>
+</div>
+
+<script>
+    const editVoucher = async (code, data) => {
+        const endpoint = `{{apiUrl}}/api/v1/vouchers/${code}`;
+
+        const response = await fetch(endpoint, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data),
+        });
+
+        const result = await response.json();
+
+        if (result.status.code === 200) {
+            showToast('success', 'Berhasil', 'Voucher berhasil diubah.');
+            return true;
+        } else {
+            showToast('error', 'Error', result.message);
+            return false
+        }
+    };
+
+    const main = async (code, data) => {
+
+        document.querySelector('form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const code = document.getElementById('code').value;
+            const formData = {
+                type: document.getElementById('type').value,
+                value: parseFloat(document.getElementById('value').value),
+                minPurchase: parseFloat(document.getElementById('minPurchase').value),
+                maxVoucher: parseFloat(document.getElementById('maxVoucher').value),
+                startDate: document.getElementById('startDate').value,
+                endDate: document.getElementById('endDate').value,
+            };
+
+
+            const result = await editVoucher(code, formData);
+            if (result) {
+                setTimeout(() => {
+                    window.location.href = '/admin/vouchers';
+                }, 2000);
+            }
+        })
+    };
+
+    main();
+</script>
+
+
+@endslot
+@end

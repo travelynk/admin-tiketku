@@ -9,77 +9,77 @@
               <div class="sm:col-span-3">
                 <label for="first-name" class="block text-sm/6 font-medium text-gray-900">Airline</label>
                 <div class="mt-1">
-                  @!component('components/ui/flight/select-airline', { id: "select-airline", name: "airline", airlines })
+                  @!component('components/ui/flight/select-airline', { id: "select-airline", name: "airline", airlines, selectedItem: flight.airline.id })
                 </div>
               </div>
 
               <div class="sm:col-span-3">
                 <label for="flight-number" class="block text-sm/6 font-medium text-gray-900">Flight Number</label>
                 <div class="mt-1">
-                  <input type="text" name="flight-number" id="flight-number" autocomplete="flight-number" class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6">
+                  <input type="text" name="flight-number" id="flight-number" autocomplete="flight-number" value="{{ flight.flightNum }}" class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6">
                 </div>
               </div>
 
               <div class="sm:col-span-3">
                 <label for="first-name" class="block text-sm/6 font-medium text-gray-900">Departure Terminal</label>
                 <div class="mt-1">
-                    @!component('components/ui/flight/select-terminal', { id: "select-departure-terminal", name: "terminal", terminals })
+                    @!component('components/ui/flight/select-terminal', { id: "select-departure-terminal", name: "terminal", terminals, selectedItem: flight.departure.terminal.id })
                 </div>
               </div>
       
               <div class="sm:col-span-3">
                 <label for="flight-number" class="block text-sm/6 font-medium text-gray-900">Arrival Terminal</label>
                 <div class="mt-1">
-                    @!component('components/ui/flight/select-terminal', { id: "select-arrival-terminal", name: "terminal", terminals })
+                    @!component('components/ui/flight/select-terminal', { id: "select-arrival-terminal", name: "terminal", terminals, selectedItem: flight.arrival.terminal.id })
                 </div>
               </div>
 
               <div class="sm:col-span-2 sm:col-start-1">
                 <label for="departure-time" class="block text-sm/6 font-medium text-gray-900">Departure Time</label>
                 <div class="mt-1">
-                  <input type="datetime-local" name="departure-time" id="departure-time" autocomplete="departure-time" class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6">
+                  <input type="datetime-local" name="departure-time" id="departure-time" autocomplete="departure-time" value="{{ flight.departure.schedule }}" class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6">
                 </div>
               </div>
       
               <div class="sm:col-span-2">
                 <label for="arrival-time" class="block text-sm/6 font-medium text-gray-900">Arrival Time</label>
                 <div class="mt-1">
-                  <input type="datetime-local" name="arrival-time" id="arrival-time" autocomplete="arrival-time" class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6">
+                  <input type="datetime-local" name="arrival-time" id="arrival-time" autocomplete="arrival-time" value="{{ flight.arrival.schedule }}" class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6">
                 </div>
               </div>
       
               <div class="sm:col-span-2">
                 <label for="estimated-duration" class="block text-sm/6 font-medium text-gray-900">Estimated Duration</label>
                 <div class="mt-1">
-                  <input type="text" readonly name="estimated-duration" id="estimated-duration" autocomplete="estimated-duration" class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6">
+                  <input type="text" readonly name="estimated-duration" id="estimated-duration" autocomplete="estimated-duration" value="{{ flight.estimatedDuration }}" class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6">
                 </div>
               </div>
 
               <div class="sm:col-span-2 sm:col-start-1">
                 <label for="select-seatclass" class="block text-sm/6 font-medium text-gray-900">Seat Class</label>
                 <div class="mt-1">
-                  @!component('components/ui/flight/select-seat-class', { id: "select-seatclass", name: "seatClass" })
+                  @!component('components/ui/flight/select-seat-class', { id: "select-seatclass", name: "seatClass" , selectedItem: flight.seatClass })
                 </div>
               </div>
 
               <div class="sm:col-span-2">
                 <label for="seat-capacity" class="block text-sm/6 font-medium text-gray-900">Seat Capacity</label>
                 <div class="mt-1">
-                  <input type="number" name="seat-capacity" id="seat-capacity" autocomplete="seat-capacity" class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6">
+                  <input type="number" name="seat-capacity" id="seat-capacity" autocomplete="seat-capacity" value="{{ flight.seatCapacity }}" class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6">
                 </div>
               </div>
 
               <div class="sm:col-span-2">
                 <label for="price" class="block text-sm/6 font-medium text-gray-900">Price</label>
                 <div class="mt-1">
-                  <input type="number" name="price" id="price" autocomplete="price" class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6">
+                  <input type="number" name="price" id="price" autocomplete="price" value="{{ flight.price }}" class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6">
                 </div>
               </div>
 
               <div class="col-span-full">
                 <label for="facility" class="block text-sm/6 font-medium text-gray-900">Facility</label>
                 <div class="mt-1">
-                  <textarea name="facility" id="facility" class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"></textarea>
+                  <textarea name="facility" id="facility" class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6">{{ flight.facility }}</textarea>
                 </div>
               </div>
 
@@ -90,15 +90,15 @@
       
         <div class="my-5 flex items-center justify-end gap-x-6">
           <button type="button" class="rounded-md hover:bg-gray-200 px-3 py-2 text-sm font-semibold text-black shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-300" onclick="window.history.back()">Cancel</button>
-          <button type="button" onclick="store()" class="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Save</button>
+          <button type="button" onclick="update()" class="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Save</button>
         </div>
       </form>
 </div>
 
 <script src="/js/form-flight-validation.js"></script>
 <script>
-  // Store data
-  const store = async () => {
+  // Update data
+  const update = async () => {
     let flightNum = document.getElementById('flight-number').value;
     let airlineId = document.getElementById('select-airline').value;
     let departureTerminalId = document.getElementById('select-departure-terminal').value;
@@ -123,26 +123,29 @@
       seatCapacity: parseInt(seatCapacity),
       price: parseInt(price),
       facility
-    }
+    };
 
-    const response = await fetch('{{ api }}/api/v1/flights', {
-      method: 'POST',
+    const response = await fetch('{{ api }}/api/v1/flights/{{ flight.id }}', {
+      method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
         'Authorization': 'Bearer ' + localStorage.getItem('token')
       },
       body: JSON.stringify(data),
-    })
+    });
 
-    if(response.status == 201){
+    if(response.status == 201 || response.status == 200){
       showToast('success', "Success", 'Data berhasil disimpan');
-      window.location.href = '/flights';
+      setTimeout(() => {
+        window.location.href = '/admin/flights';
+      }, 1000);
     }else{
       const result =  await response.json();
+      console.log(result);
       showToast('error', "Error", result.message);
-    }
+    };
     
-  }
+  };
 
 </script>
 
