@@ -136,7 +136,9 @@
 
     if(response.status == 201){
       showToast('success', "Success", 'Data berhasil disimpan');
-      window.location.href = '/flights';
+      setTimeout(() => {
+        window.location.href = '/admin/flights';
+      }, 1000);
     }else{
       const result =  await response.json();
       showToast('error', "Error", result.message);
