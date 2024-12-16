@@ -1,45 +1,20 @@
 import * as TerminalService from './services.js';
+import { getAllAirport } from '../airport/services.js'
 
 export const index = async (req, res, next) => {
     try {
         const terminals = await TerminalService.getAllTerminal();
+        const airports = await getAllAirport();
+        const api = process.env.API_URL;
 
         const data = {
             title: 'Terminal',
-            terminals
+            api,
+            terminals,
+            airports
         }
 
         res.edge('pages/terminal/index', data);
-    } catch (error) {
-        next(error)
-    }
-};
-
-export const create = async (req, res, next) => {
-    try {
-        const api = process.env.API_URL;
-        const data = {
-            title: 'Terminal',
-            sub: 'Create',
-            api
-        }
-
-        res.edge('pages/terminal/create', data);
-    } catch (error) {
-        next(error)
-    }
-};
-
-export const edit = async (req, res, next) => {
-    try {
-        const terminal = await TerminalService.getTerminalById(req.params.id);
-        const data = {
-            title: 'Terminal',
-            sub: 'Edit',
-            terminal
-        }
-
-        res.edge('pages/terminal/edit', data);
     } catch (error) {
         next(error)
     }

@@ -4,6 +4,7 @@ import authRouter from './auth/routes.js';
 import dashboardRouter from './dashboard/routes.js';
 import airlineRouter from './airline/routes.js';
 import airportRouter from './airport/routes.js';
+import terminalRouter from './terminal/routes.js';
 import cityRouter from './city/routes.js';
 import flightRouter from './flight/routes.js';
 import userRouter from './user/routes.js';
@@ -25,6 +26,7 @@ export default (app) => {
     dashboardRouter(router);
     airlineRouter(router);
     airportRouter(router);
+    terminalRouter(router);
     cityRouter(router);
     flightRouter(router);
     userRouter(router);
