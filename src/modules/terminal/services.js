@@ -1,7 +1,7 @@
 import { ErrorCustom } from '../../utils/customError.js';
 
-export const getAllAirport = async () => {
-    const response = await fetch(process.env.API_URL + '/api/v1/airports');
+export const getAllTerminal = async () => {
+    const response = await fetch(process.env.API_URL + '/api/v1/terminals');
     const result = await response.json();
 
     if (response.status !== 200) {
@@ -11,8 +11,8 @@ export const getAllAirport = async () => {
     return result.data;
 };
 
-export const getAirportById = async (id) => {
-    const response = await fetch(process.env.API_URL + '/api/v1/airports/' + id);
+export const getTerminalById = async (id) => {
+    const response = await fetch(process.env.API_URL + '/api/v1/terminals/' + id);
     const result = await response.json();
 
     if (response.status !== 200) {
