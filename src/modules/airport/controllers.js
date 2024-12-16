@@ -7,7 +7,7 @@ export const index = async (req, res, next) => {
         const cities = await getAllCity();
         const api = process.env.API_URL;
         const data = {
-            title: 'Airports',
+            title: 'Airport',
             airports,
             cities,
             api
