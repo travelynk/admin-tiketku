@@ -3,7 +3,6 @@ import * as AirlineService from './services.js';
 export const index = async (req, res, next) => {
     try {
         const airlines = await AirlineService.getAirlines();
-// console.log(airlines);
         res.edge('pages/airline/index', { title: "Airline", airlines, api: process.env.API_URL });
     } catch (error) {
         next(error)
@@ -20,7 +19,6 @@ export const create = async (req, res, next) => {
         }
 
 
-        // res.edge('pages/airline/create', { title: "airline" });
         res.edge('pages/airline/create', data);
     } catch (error) {
         next(error)

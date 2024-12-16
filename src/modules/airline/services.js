@@ -1,7 +1,6 @@
 import { ErrorCustom } from "../../utils/customError.js";
 
 export const getAirlines = async () => {
-    // const response = await fetch(process.env.API_URL + `/api/v1/airlines/${id}`);
     const response = await fetch(process.env.API_URL + `/api/v1/airlines`);
     const result = await response.json();
 
@@ -13,7 +12,6 @@ export const getAirlines = async () => {
 };
 
 export const getAirlineById = async (id) => {
-    // const response = await fetch(process.env.API_URL + `/api/v1/airlines/${id}`);
     const response = await fetch(process.env.API_URL + `/api/v1/airlines/${id}`);
     const result = await response.json();
 
