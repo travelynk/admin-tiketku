@@ -2,7 +2,8 @@ import * as AirlineService from './services.js';
 
 export const index = async (req, res, next) => {
     try {
-        const airlines = await AirlineService.getAirlines();
+        const token = req.session.token;
+        const airlines = await AirlineService.getAirlines(token);
         res.edge('pages/airline/index', { title: "Airline", airlines, api: process.env.API_URL });
     } catch (error) {
         next(error)
@@ -11,7 +12,6 @@ export const index = async (req, res, next) => {
 
 export const create = async (req, res, next) => {
     try {
-        console.log('testing');
         const data = { 
             title: "Airline", 
             sub: "Create",
@@ -28,8 +28,9 @@ export const create = async (req, res, next) => {
 
 export const edit = async (req, res, next) => {
     try {
-        const { id } = req.params; // Mengambil ID dari parameter URL
-        const airline = await AirlineService.getAirlineById(id); // Mengambil data maskapai berdasarkan ID
+        const { id } = req.params;
+        const token = req.session.token;
+        const airline = await AirlineService.getAirlineById(id, token);
 
         if (!airline) {
             // Jika maskapai tidak ditemukan, lemparkan error

@@ -3,8 +3,9 @@ import { getAllAirport } from '../airport/services.js'
 
 export const index = async (req, res, next) => {
     try {
-        const terminals = await TerminalService.getAllTerminal();
-        const airports = await getAllAirport();
+        const token = req.session.token;
+        const terminals = await TerminalService.getAllTerminal(token);
+        const airports = await getAllAirport(token);
         const api = process.env.API_URL;
 
         const data = {
