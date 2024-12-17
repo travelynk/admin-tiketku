@@ -3,7 +3,8 @@ import formatTime from "../../utils/formatTime.js";
 
 export const index = async (req, res, next) => {
     try {
-        let flights = await FlightService.getFlights();
+        const token = req.session.token;
+        let flights = await FlightService.getFlights(token);
 
         flights = flights.map(flight => {
             return {
@@ -35,8 +36,9 @@ export const index = async (req, res, next) => {
 
 export const create = async (req, res, next) => {
     try {
-        const terminals = await FlightService.getTerminalWithAirport();
-        const airlines = await FlightService.getAirline();
+        const token = req.session.token;
+        const terminals = await FlightService.getTerminalWithAirport(token);
+        const airlines = await FlightService.getAirline(token);
         const api = process.env.API_URL;
 
         const data = { 
@@ -55,9 +57,10 @@ export const create = async (req, res, next) => {
 
 export const edit = async (req, res, next) => {
     try {
-        const terminals = await FlightService.getTerminalWithAirport();
-        const airlines = await FlightService.getAirline();
-        const flight = await FlightService.getFlight(req.params.id);
+        const token = req.session.token;
+        const terminals = await FlightService.getTerminalWithAirport(token);
+        const airlines = await FlightService.getAirline(token);
+        const flight = await FlightService.getFlight(req.params.id, token);
         const api = process.env.API_URL;
 
         const data = { 

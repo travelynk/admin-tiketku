@@ -1,9 +1,295 @@
-@layout.app({ menu: "City"})
+@layout.app({ menu: title })
 @slot('main')
 
-<div>
-    {{ title }}
+<div class="flex justify-between gap-10 my-5">
+    <div x-data="{ showFormCreate: false }" class="w-full">
+        <h3 class="text-center text-xl font-bold">Cities</h3>
+
+        {{-- The button to show the form to create a new city --}}
+        <div class="mb-5">
+            <button class="w-fit flex items-center gap-2 py-1 pl-2 pr-3 rounded-lg hover:bg-green-200 text-green-600"  x-on:click="showFormCreate = ! showFormCreate">
+                <img src="/images/icons/add.svg" alt="trash-icon">
+                <span>Add</span>
+            </button>
+        </div>
+    
+        {{-- The form to create a new city --}}
+        <div x-show="showFormCreate" class="mb-5 pb-5 flex gap-1 items-end border-b border-gray-300">
+            <div class="flex gap-2 w-11/12 px-2">
+                <div class="w-full">
+                    <label for="city-code" class="block text-sm/6 font-medium text-gray-900">Code</label>
+                    <div class="mt-1">
+                        <input type="text" name="city-code" id="city-code" autocomplete="city-code"
+                            class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6">
+                    </div>
+                </div>
+    
+                <div class="w-full">
+                    <label for="city-name" class="block text-sm/6 font-medium text-gray-900">Name</label>
+                    <div class="mt-1">
+                        <input type="text" name="city-name" id="city-name" autocomplete="city-name"
+                            class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6">
+                    </div>
+                </div>
+    
+                <div class="w-full">
+                    <label for="select-country" class="block text-sm/6 font-medium text-gray-900">Country</label>
+                    <div class="mt-1">
+                        @!component('components/ui/city/select-country', { id: "select-country", name: "country",
+                        countries })
+                    </div>
+                </div>
+    
+            </div>
+            <div class="flex gap-1 h-fit">
+                <button type="button" x-on:click="showFormCreate = ! showFormCreate, store()"
+                    class="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Save</button>
+                <button type="button"
+                    class="rounded-md hover:bg-gray-200 px-3 py-2 text-sm font-semibold text-black shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-300"
+                    x-on:click="showFormCreate = ! showFormCreate">Cancel</button>
+            </div>
+        </div>
+    
+        {{-- The table to list all cities --}}
+        <table class="myTable display" style="width:100%">
+            <thead>
+                <tr>
+                    <th>No</th>
+                    <th>Code</th>
+                    <th>Name</th>
+                    <th>Country</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @each((city, index) in cities)
+                <tr>
+                    <td>{{ index + 1 }}</td>
+                    <td>{{ city.code }}</td>
+                    <td>{{ city.name }}</td>
+                    <td>{{ city.country.name }}</td>
+                    <td class="flex gap-2">
+                        <button onclick="window.location.href='/admin/cities/edit/{{ city.code }}'" class="rounded">
+                            <img src="/images/icons/edit.svg" alt="trash-icon" class="p-1 rounded-xl hover:bg-blue-200">
+                        </button>
+                        <button onclick="destroy('{{ city.code }}')" class="rounded">
+                            <img src="/images/icons/trash.svg" alt="trash-icon" class="p-1 rounded-xl hover:bg-red-200">
+                        </button>
+                    </td>
+                </tr>
+                @end
+        </table>
+    </div>
+
+    <div x-data="{ showFormCreateCountry: false }" class="w-full border-l border-gray-300 pl-10">
+        <h3 class="text-center text-xl font-bold">Countries</h3>
+
+        {{-- The button to show the form to create a new city --}}
+        <div class="mb-5">
+            <button class="w-fit flex items-center gap-2 py-1 pl-2 pr-3 rounded-lg hover:bg-green-200 text-green-600"  x-on:click="showFormCreateCountry = ! showFormCreateCountry">
+                <img src="/images/icons/add.svg" alt="trash-icon">
+                <span>Add</span>
+            </button>
+        </div>
+    
+        {{-- The form to create a new city --}}
+        <div x-show="showFormCreateCountry" class="mb-5 pb-5 flex gap-1 items-end border-b border-gray-300">
+            <div class="flex gap-2 w-11/12 px-2">
+                <div class="w-full">
+                    <label for="country-code" class="block text-sm/6 font-medium text-gray-900">Code</label>
+                    <div class="mt-1">
+                        <input type="text" name="country-code" id="country-code" autocomplete="country-code"
+                            class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6">
+                    </div>
+                </div>
+    
+                <div class="w-full">
+                    <label for="country-name" class="block text-sm/6 font-medium text-gray-900">Name</label>
+                    <div class="mt-1">
+                        <input type="text" name="country-name" id="country-name" autocomplete="country-name"
+                            class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6">
+                    </div>
+                </div>
+    
+                <div class="w-full">
+                    <label for="select-region" class="block text-sm/6 font-medium text-gray-900">Region</label>
+                    <div class="mt-1">
+                        @!component('components/ui/city/select-region', { id: "select-region", name: "region" })
+                    </div>
+                </div>
+    
+            </div>
+            <div class="flex gap-1 h-fit">
+                <button type="button" x-on:click="showFormCreateCountry = ! showFormCreateCountry, storeCountry()"
+                    class="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Save</button>
+                <button type="button"
+                    class="rounded-md hover:bg-gray-200 px-3 py-2 text-sm font-semibold text-black shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-300"
+                    x-on:click="showFormCreateCountry = ! showFormCreateCountry">Cancel</button>
+            </div>
+        </div>
+    
+        {{-- The table to list all cities --}}
+        <table class="myTable display" style="width:100%">
+            <thead>
+                <tr>
+                    <th>No</th>
+                    <th>Code</th>
+                    <th>Name</th>
+                    <th>Region</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @each((country, index) in countries)
+                <tr>
+                    <td>{{ index + 1 }}</td>
+                    <td>{{ country.code }}</td>
+                    <td>{{ country.name }}</td>
+                    <td>{{ country.region }}</td>
+                    <td class="flex gap-2">
+                        <button onclick="window.location.href='/admin/cities/country/edit/{{ country.code }}'" class="rounded">
+                            <img src="/images/icons/edit.svg" alt="trash-icon" class="p-1 rounded-xl hover:bg-blue-200">
+                        </button>
+                        <button onclick="destroyCountry('{{ country.code }}')" class="rounded">
+                            <img src="/images/icons/trash.svg" alt="trash-icon" class="p-1 rounded-xl hover:bg-red-200">
+                        </button>
+                    </td>
+                </tr>
+                @end
+        </table>
+    </div>
 </div>
+
+<script>	
+    async function store() {
+        const code = document.getElementById('city-code').value;
+        const name = document.getElementById('city-name').value;
+        const countryCode = document.getElementById('select-country').value;
+
+        const data = {
+            code,
+            name,
+            countryCode
+        };
+
+        const response = await fetch('{{ api }}/api/v1/cities', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + localStorage.getItem('token')
+            },
+            body: JSON.stringify(data),
+        });
+
+        if (response.status == 201) {
+            showToast('success', "Success", 'Data kota berhasil disimpan');
+            setTimeout(() => {
+                window.location.href = '/admin/cities';
+            }, 1000);
+        } else {
+            const result = await response.json();
+            showToast('error', "Error", result.message);
+        };
+    };
+
+    function destroy(id) {
+        Swal.fire({
+            title: 'Kamu yakin ingin menghapus data kota ini?',
+            text: "Kamu tidak akan bisa mengembalikan data ini!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Ya, hapus kota!',
+            cancelButtonText: 'Batal'
+        }).then(async (result) => {
+            if (result.isConfirmed) {
+                const response = await fetch('{{ api }}/api/v1/cities/' + id, {
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Bearer ' + localStorage.getItem('token')
+                    }
+                });
+
+                if (response.status == 200) {
+                    showToast('success', "Success", 'Data kota berhasil dihapus');
+                    setTimeout(() => {
+                        window.location.href = '/admin/cities';
+                    }, 1000);
+                } else {
+                    const result = await response.json();
+                    showToast('error', "Error", result.message);
+                };
+            };
+        });
+    };
+
+    async function storeCountry() {
+        const code = document.getElementById('country-code').value;
+        const name = document.getElementById('country-name').value;
+        const region = document.getElementById('select-region').value;
+
+        const data = {
+            code,
+            name,
+            region
+        };
+
+        const response = await fetch('{{ api }}/api/v1/countries', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + localStorage.getItem('token')
+            },
+            body: JSON.stringify(data),
+        });
+
+        if (response.status == 201) {
+            showToast('success', "Success", 'Data negara berhasil disimpan');
+            setTimeout(() => {
+                window.location.href = '/admin/cities';
+            }, 1000);
+        } else {
+            const result = await response.json();
+            showToast('error', "Error", result.message);
+        };
+    };
+
+    function destroyCountry(id) {
+        Swal.fire({
+            title: 'Kamu yakin ingin menghapus data negara ini?',
+            text: "Kamu tidak akan bisa mengembalikan data ini!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Ya, hapus negara!',
+            cancelButtonText: 'Batal'
+        }).then(async (result) => {
+            if (result.isConfirmed) {
+                const response = await fetch('{{ api }}/api/v1/countries/' + id, {
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Bearer ' + localStorage.getItem('token')
+                    }
+                });
+
+                if (response.status == 200) {
+                    showToast('success', "Success", 'Data negara berhasil dihapus');
+                    setTimeout(() => {
+                        window.location.href = '/admin/cities';
+                    }, 1000);
+                } else {
+                    const result = await response.json();
+                    showToast('error', "Error", result.message);
+                };
+            };
+        });
+    };
+
+</script>
 
 @endslot
 @end

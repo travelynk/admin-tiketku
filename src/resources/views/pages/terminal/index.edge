@@ -1,10 +1,10 @@
-@layout.app({ menu: "Terminal"})
+@layout.app({ menu: title})
 @slot('main')
 
 <div x-data="{ showFormCreate: false }">
     {{-- The button to show the form to create a new terminal --}}
-    <div class="mb-5" x-on:click="showFormCreate = ! showFormCreate">
-        <button class="w-fit flex items-center gap-2 py-1 pl-2 pr-3 rounded-lg hover:bg-green-200 text-green-600">
+    <div class="mb-5">
+        <button class="w-fit flex items-center gap-2 py-1 pl-2 pr-3 rounded-lg hover:bg-green-200 text-green-600" x-on:click="showFormCreate = ! showFormCreate">
             <img src="/images/icons/add.svg" alt="trash-icon">
             <span>Add</span>
         </button>
@@ -61,7 +61,7 @@
         </thead>
         <tbody>
             @each((terminal, index) in terminals)
-            <tr id="data-terminal-{{ terminal.id }}">
+            <tr>
                 <td>{{ index + 1 }}</td>
                 <td>{{ terminal.name }}</td>
                 <td>{{ terminal.category }}</td>
@@ -69,40 +69,13 @@
                 <td>{{ terminal.city.name }}</td>
                 <td>{{ terminal.country.name }}</td>
                 <td class="flex gap-2">
-                    <button onclick="showFormEdit('{{ terminal.id }}')" class="rounded">
+                    <button onclick="window.location.href='/admin/terminals/edit/{{ terminal.id }}'" class="rounded">
                         <img src="/images/icons/edit.svg" alt="trash-icon" class="p-1 rounded-xl hover:bg-blue-200">
                     </button>
-                    <button onclick="destroy({{ terminal.id }})" class="rounded">
+                    <button onclick="destroy('{{ terminal.id }}')" class="rounded">
                         <img src="/images/icons/trash.svg" alt="trash-icon" class="p-1 rounded-xl hover:bg-red-200">
                     </button>
                 </td>
-            </tr>
-            <tr id="form-terminal-{{ terminal.id }}" class="hidden">
-                <td>1</td>
-                <td colspan="1">
-                    <input type="text" name="edit-terminal-name" id="edit-terminal-name"
-                        autocomplete="edit-terminal-name" value="{{ terminal.name }}" placeholder="Input terminal name"
-                        class="block w-full rounded-md bg-white px-1 py-1.5 text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6">
-                </td>
-                <td colspan="1">
-                    @!component('components/ui/terminal/select-category', { id: "edit-select-category", name:
-                    "edit-category", selectedItem: terminal.category })
-                </td>
-                <td colspan="3">
-                    @!component('components/ui/terminal/select-airport', { id: "edit-select-airport", name:
-                    "edit-airport", airports, selectedItem: terminal.airport.id })
-                </td>
-                <td>
-                    <div class="flex gap-1 h-fit">
-                        <button type="button"  onclick="update('{{ terminal.id }}')"
-                            class="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Save</button>
-                        <button type="button"
-                            class="rounded-md hover:bg-gray-200 px-3 py-2 text-sm font-semibold text-black shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-300"
-                            onclick="showDataTerminal('{{ terminal.id }}')">Cancel</button>
-                    </div>
-                </td>
-                <td class="hidden">input test</td>
-                <td class="hidden">input test</td>
             </tr>
             @end
 
@@ -119,7 +92,7 @@
             name,
             category,
             airportId
-        }
+        };
 
         const response = await fetch('{{ api }}/api/v1/terminals', {
             method: 'POST',
@@ -128,7 +101,7 @@
                 'Authorization': 'Bearer ' + localStorage.getItem('token')
             },
             body: JSON.stringify(data),
-        })
+        });
 
         if (response.status == 201) {
             showToast('success', "Success", 'Data berhasil disimpan');
@@ -138,55 +111,8 @@
         } else {
             const result = await response.json();
             showToast('error', "Error", result.message);
-        }
-
-    }
-
-    function showFormEdit(id) {
-        const terminalRow = document.getElementById('data-terminal-' + id);
-        const terminalForm = document.getElementById('form-terminal-' + id);
-        terminalRow.classList.add('hidden');
-        terminalForm.classList.remove('hidden');
-    }
-
-    function showDataTerminal(id) {
-        const terminalRow = document.getElementById('data-terminal-' + id);
-        const terminalForm = document.getElementById('form-terminal-' + id);
-        terminalRow.classList.remove('hidden');
-        terminalForm.classList.add('hidden');
-    }
-
-    async function update(id) {
-        const name = document.getElementById('edit-terminal-name').value;
-        const category = document.getElementById('edit-select-category').value;
-        const airportId = document.getElementById('edit-select-airport').value;
-
-        const data = {
-            name,
-            category,
-            airportId
-        }
-
-        const response = await fetch('{{ api }}/api/v1/terminals/' + id, {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': 'Bearer ' + localStorage.getItem('token')
-            },
-            body: JSON.stringify(data),
-        })
-
-        if (response.status == 200) {
-            showToast('success', "Success", 'Data berhasil diperbarui');
-            setTimeout(() => {
-                window.location.href = '/admin/terminals';
-            }, 1000);
-        } else {
-            const result = await response.json();
-            showToast('error', "Error", result.message);
-        }
-
-    }
+        };
+    };
 
     function destroy(id) {
         Swal.fire({
@@ -206,7 +132,7 @@
                         'Content-Type': 'application/json',
                         'Authorization': 'Bearer ' + localStorage.getItem('token')
                     }
-                })
+                });
 
                 if (response.status == 200) {
                     showToast('success', "Success", 'Data terminal berhasil dihapus');
@@ -216,10 +142,10 @@
                 } else {
                     const result = await response.json();
                     showToast('error', "Error", result.message);
-                }
-            }
-        })
-    }
+                };
+            };
+        });
+    };
 </script>
 
 @endslot

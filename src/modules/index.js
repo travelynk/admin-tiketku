@@ -1,5 +1,5 @@
 import { Router } from 'express';
-// import authMiddleware from '../middlewares/auth.js';
+import authMiddleware from '../middlewares/auth.js';
 import authRouter from './auth/routes.js';
 import dashboardRouter from './dashboard/routes.js';
 import airlineRouter from './airline/routes.js';
@@ -22,7 +22,7 @@ export default (app) => {
 
     authRouter(router);
     
-    // router.use(authMiddleware);
+    router.use(authMiddleware);
     dashboardRouter(router);
     airlineRouter(router);
     airportRouter(router);
