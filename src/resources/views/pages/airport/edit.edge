@@ -1,4 +1,4 @@
-@layout.app({ menu: title})
+@layout.app({ menu: title, sub: 'Edit' })
 @slot('main')
 
 <div>
@@ -10,7 +10,7 @@
     </div>
 
     {{-- The form to create a new airport --}}
-    <div x-show="showFormCreate" class="mb-5 pb-5 flex gap-1 items-end border-b border-gray-300">
+    <div class="mb-5 pb-5 flex gap-1 items-end border-b border-gray-300">
         <div class="flex gap-2 w-11/12 px-2">
             <div class="w-full">
                 <label for="airport-code" class="block text-sm/6 font-medium text-gray-900">Code</label>
