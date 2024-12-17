@@ -1,9 +1,79 @@
-@layout.app({ menu: "Airline"})
+@layout.app({ menu: title})
 @slot('main')
 
 <div>
-    {{ title }}
+    <div class="mb-5">
+        <a href="/admin/airlines/create" class="w-fit flex items-center gap-2 py-1 pl-2 pr-3 rounded-lg hover:bg-green-200 text-green-600">
+            <img src="/images/icons/add.svg" alt="trash-icon">
+            <span>Add</span>
+        </a>
+    </div>
+    <table class="myTable display" style="width:100%">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Code</th>
+                <th>Name</th>
+                <th>Image</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @each(airline in airlines)
+            <tr>
+                <td>{{ airline.id }}</td>
+                <td>{{ airline.code }}</td>
+                <td>{{ airline.name }}</td>
+                <td>
+                    <img src="{{ airline.image }}" width="30px">
+                </td>
+                <td class="flex gap-2">
+                    <a href="/admin/airlines/edit/{{ airline.id }}" class="rounded">
+                        <img src="/images/icons/edit.svg" alt="trash-icon" class="p-1 rounded-xl hover:bg-blue-200">
+                    </a>
+                    <button type="button" onclick="destroy('{{airline.id}}')">
+                        <img src="/images/icons/trash.svg" alt="trash-icon" class="p-1 rounded-xl hover:bg-red-200">
+                    </button>
+                </td>
+            </tr>
+            @end
+
+    </table>
 </div>
+<script>
+    function destroy(id) {
+        Swal.fire({
+            title: 'Kamu yakin ingin menghapus data airline ini?',
+            text: "Kamu tidak akan bisa mengembalikan data ini!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Ya, hapus airline!',
+            cancelButtonText: 'Batal'
+        }).then(async (result) => {
+            if (result.isConfirmed) {
+                const response = await fetch('{{ api }}/api/v1/airlines/' + id, {
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Bearer ' + localStorage.getItem('token')
+                    }
+                })
+
+                if (response.status == 200) {
+                    showToast('success', "Success", 'Data airline berhasil dihapus');
+                    setTimeout(() => {
+                        window.location.href = '/admin/airlines';
+                    }, 1000);
+                } else {
+                    const result = await response.json();
+                    showToast('error', "Error", result.message);
+                }
+            }
+        })
+    }
+</script>
 
 @endslot
 @end

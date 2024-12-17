@@ -1,0 +1,122 @@
+@layout.app({ menu: title, sub })
+@slot('main')
+
+<div>
+  <form>
+    <div class="space-y-12">
+      <div class="border-b border-gray-900/10 pb-12">
+        <h2 class="text-lg font-semibold text-gray-900">Personal Information</h2>
+        <p class="mt-1 text-sm text-gray-600">Use a permanent address where you can receive mail.</p>
+
+        <div class="mt-5 grid grid-cols-1 gap-6 sm:grid-cols-6">
+          <div class="sm:col-span-3">
+            <label for="code-airline" class="block text-sm font-medium text-gray-900">Code</label>
+            <div class="mt-1">
+              <input 
+                type="text" 
+                name="code-airline" 
+                id="code-airline" 
+                autocomplete="given-name" 
+                class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 outline-gray-300 placeholder-gray-400 focus:outline-indigo-600 focus:ring-2 focus:ring-indigo-600 sm:text-sm">
+            </div>
+          </div>
+          <div class="sm:col-span-3">
+            <label for="name-airline" class="block text-sm font-medium text-gray-900">Name</label>
+            <div class="mt-1">
+              <input 
+                type="text" 
+                name="name-airline" 
+                id="name-airline" 
+                autocomplete="family-name" 
+                class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 outline-gray-300 placeholder-gray-400 focus:outline-indigo-600 focus:ring-2 focus:ring-indigo-600 sm:text-sm">
+            </div>
+          </div>
+          <div class="sm:col-span-4">
+            <label for="image-airline" class="block text-sm font-medium text-gray-900">Image</label>
+            <div class="mt-1">
+              <input 
+                type="file" 
+                id="image-airline" 
+                name="image-airline" 
+                class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 outline-gray-300 placeholder-gray-400 focus:outline-indigo-600 focus:ring-2 focus:ring-indigo-600 sm:text-sm">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="mt-6 flex items-center justify-end gap-6">
+      <button type="button" class="text-sm font-semibold text-gray-900">Cancel</button>
+      <button 
+        type="button" 
+        onclick="store()"
+        class="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus:outline focus:ring-2 focus:ring-indigo-600">
+        Save
+      </button>
+    </div>
+  </form>
+</div>
+
+<script>
+  const store = async () => {
+    let code = document.getElementById('code-airline').value;
+    let name = document.getElementById('name-airline').value;
+    let imageInput = document.getElementById('image-airline');
+    let image = imageInput.files[0];
+
+    if (image) {
+      const allowedTypes = ['image/jpeg', 'image/png'];
+      if (!allowedTypes.includes(image.type)) {
+        alert('Only JPEG and PNG formats are allowed.');
+        return;
+      }
+
+      if (image.size > 2 * 1024 * 1024) {
+        alert('File size must be less than 2MB.');
+        return;
+      }
+    } else {
+      alert('Please select an image file.');
+      return;
+    }
+
+    let formData = new FormData();
+    formData.append('code', code);
+    formData.append('name', name);
+    formData.append('image', image);
+
+    try {
+      let response = await fetch('{{ api }}/api/v1/airlines', {
+        method: 'POST',
+        headers: {
+ 
+          'Authorization': 'Bearer ' + localStorage.getItem('token')
+        },
+        body: formData,
+      });
+
+      if(response.status == 200){
+        showToast('success', "Success", 'Data berhasil disimpan');
+        setTimeout(() => {
+          window.location.href = 'admin/airlines';
+        }, 1000);
+
+      }else {
+        const result = await response.json();
+        showToast('error', "Error",result.message);
+
+      }
+     // Tampilkan pesan sukses
+     showToast('success', "Success", "Data berhasil dibuat");
+     setTimeout(() => {
+       window.location.href = '/admin/airlines';
+     }, 1000);
+   } catch (error) {
+     showToast('error', "Error", "Terjadi kesalahan saat memperbarui data");
+   }
+
+  };
+
+</script>
+
+@endslot
+@end
