@@ -1,9 +1,53 @@
 @layout.app({ menu: "Voucher"})
 @slot('main')
-
 <div>
-    {{ title }}
+    <div class="mb-5">
+        <a href="/admin/vouchers/add"
+            class="w-fit flex items-center gap-2 py-1 pl-2 pr-3 rounded-lg hover:bg-green-200 text-green-600">
+            <img src="/images/icons/add.svg" alt="add-icon">
+            <span>Add</span>
+        </a>
+    </div>
+    <table class="myTable display" style="width:100%">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Kode</th>
+                <th>Tipe</th>
+                <th>Nilai</th>
+                <th>Min Pembelian</th>
+                <th>Maksimal Voucher</th>
+                <th>Tanggal Mulai</th>
+                <th>Tanggal Berakhir</th>
+                <th>Aksi</th>
+            </tr>
+        </thead>
+        <tbody>
+            @each(data in data)
+            <tr>
+                <td>{{ data.id }}</td>
+                <td>{{ data.code }}</td>
+                <td>{{ data.type }}</td>
+                <td>
+                    @if(data.type === 'Percentage')
+                    {{ data.value }}%
+                    @else
+                    Rp{{ data.value.toLocaleString('id-ID') }}
+                    @endif
+                </td>
+                <td>Rp{{ data.minPurchase.toLocaleString('id-ID') }}</td>
+                <td>{{ data.maxVoucher }}</td>
+                <td>{{ new Date(data.startDate).toLocaleDateString('id-ID') }}</td>
+                <td>{{ new Date(data.endDate).toLocaleDateString('id-ID') }}</td>
+                <td>
+                    <a href="/admin/vouchers/edit/{{ data.id }}" class="rounded">
+                        <img src="/images/icons/edit.svg" alt="edit-icon" class="p-1 rounded-xl hover:bg-blue-200">
+                    </a>
+                </td>
+            </tr>
+            @end
+        </tbody>
+    </table>
 </div>
-
 @endslot
 @end

@@ -48,13 +48,12 @@
 
   <!-- Footer -->
   @include('components/partials/footer')
-
+  
   <script type="module">
     import preline from '/js/preline-esm.js'
   </script>
 
-  <script >
-
+  <script>
     function showToast(type, title, text) {
       Swal.fire({
         title: title,
@@ -70,7 +69,7 @@
           toast.addEventListener('mouseleave', Swal.resumeTimer)
         }
       });
-    }
+    };
 
     // cek data user di local storage
     let user = localStorage.getItem('user');
@@ -81,7 +80,9 @@
     }
 
     // set data table default
-    new DataTable('.myTable');
+    new DataTable('.myTable', {
+      order: []
+    });
 
   </script>
 </body>
