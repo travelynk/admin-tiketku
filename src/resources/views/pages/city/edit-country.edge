@@ -1,0 +1,83 @@
+@layout.app({ menu: title, sub: 'edit' })
+@slot('main')
+
+<div>
+    {{-- The button to show the form to create a new country --}}
+    <div class="mb-5">
+        <button class="w-fit flex items-center gap-2 py-1 pl-2 pr-3 rounded-lg">
+            <span class="text-lg font-bold">Edit</span>
+        </button>
+    </div>
+
+    {{-- The form to create a new country --}}
+    <div class="mb-5 pb-5 flex gap-1 items-end border-b border-gray-300">
+        <div class="flex gap-2 w-11/12 px-2">
+            <div class="w-full">
+                <label for="country-code" class="block text-sm/6 font-medium text-gray-900">Code</label>
+                <div class="mt-1">
+                    <input type="text" readonly name="country-code" id="country-code" autocomplete="country-code"
+                        value="{{ country.code }}"
+                        class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6">
+                </div>
+            </div>
+
+            <div class="w-full">
+                <label for="country-name" class="block text-sm/6 font-medium text-gray-900">Name</label>
+                <div class="mt-1">
+                    <input type="text" name="country-name" id="country-name" autocomplete="country-name" value="{{ country.name }}"
+                        class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6">
+                </div>
+            </div>
+
+            <div class="w-full">
+                <label for="select-region" class="block text-sm/6 font-medium text-gray-900">Country</label>
+                <div class="mt-1">
+                    @!component('components/ui/city/select-region', { id: "select-region", name: "region", selectedItem: country.region })
+                </div>
+            </div>
+
+        </div>
+        <div class="flex gap-1 h-fit">
+            <button type="button" onclick="update('{{ country.code }}')"
+                class="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Save</button>
+            <button type="button" onclick="window.history.back()"
+                class="rounded-md hover:bg-gray-200 px-3 py-2 text-sm font-semibold text-black shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-300">Cancel</button>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    async function update(id) {
+        const name = document.getElementById('country-name').value;
+        const region = document.getElementById('select-region').value;
+
+        const data = {
+            name,
+            region
+        };
+
+        const response = await fetch('{{ api }}/api/v1/countries/' + id, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + localStorage.getItem('token')
+            },
+            body: JSON.stringify(data),
+        });
+
+        if (response.status == 200) {
+            showToast('success', "Success", 'Data negara berhasil diperbarui');
+            setTimeout(() => {
+                window.location.href = '/admin/cities';
+            }, 1000);
+        } else {
+            const result = await response.json();
+            showToast('error', "Error", result.message);
+        };
+    };
+
+</script>
+
+@endslot
+@end

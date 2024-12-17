@@ -1,10 +1,10 @@
-@layout.app({ menu: "Terminal"})
+@layout.app({ menu: title})
 @slot('main')
 
 <div x-data="{ showFormCreate: false }">
     {{-- The button to show the form to create a new terminal --}}
-    <div class="mb-5" x-on:click="showFormCreate = ! showFormCreate">
-        <button class="w-fit flex items-center gap-2 py-1 pl-2 pr-3 rounded-lg hover:bg-green-200 text-green-600">
+    <div class="mb-5">
+        <button class="w-fit flex items-center gap-2 py-1 pl-2 pr-3 rounded-lg hover:bg-green-200 text-green-600" x-on:click="showFormCreate = ! showFormCreate">
             <img src="/images/icons/add.svg" alt="trash-icon">
             <span>Add</span>
         </button>
@@ -72,7 +72,7 @@
                     <button onclick="showFormEdit('{{ terminal.id }}')" class="rounded">
                         <img src="/images/icons/edit.svg" alt="trash-icon" class="p-1 rounded-xl hover:bg-blue-200">
                     </button>
-                    <button onclick="destroy({{ terminal.id }})" class="rounded">
+                    <button onclick="destroy('{{ terminal.id }}')" class="rounded">
                         <img src="/images/icons/trash.svg" alt="trash-icon" class="p-1 rounded-xl hover:bg-red-200">
                     </button>
                 </td>
@@ -119,7 +119,7 @@
             name,
             category,
             airportId
-        }
+        };
 
         const response = await fetch('{{ api }}/api/v1/terminals', {
             method: 'POST',
@@ -128,7 +128,7 @@
                 'Authorization': 'Bearer ' + localStorage.getItem('token')
             },
             body: JSON.stringify(data),
-        })
+        });
 
         if (response.status == 201) {
             showToast('success', "Success", 'Data berhasil disimpan');
@@ -138,23 +138,22 @@
         } else {
             const result = await response.json();
             showToast('error', "Error", result.message);
-        }
-
-    }
+        };
+    };
 
     function showFormEdit(id) {
         const terminalRow = document.getElementById('data-terminal-' + id);
         const terminalForm = document.getElementById('form-terminal-' + id);
         terminalRow.classList.add('hidden');
         terminalForm.classList.remove('hidden');
-    }
+    };
 
     function showDataTerminal(id) {
         const terminalRow = document.getElementById('data-terminal-' + id);
         const terminalForm = document.getElementById('form-terminal-' + id);
         terminalRow.classList.remove('hidden');
         terminalForm.classList.add('hidden');
-    }
+    };
 
     async function update(id) {
         const name = document.getElementById('edit-terminal-name').value;
@@ -165,7 +164,7 @@
             name,
             category,
             airportId
-        }
+        };
 
         const response = await fetch('{{ api }}/api/v1/terminals/' + id, {
             method: 'PUT',
@@ -174,7 +173,7 @@
                 'Authorization': 'Bearer ' + localStorage.getItem('token')
             },
             body: JSON.stringify(data),
-        })
+        });
 
         if (response.status == 200) {
             showToast('success', "Success", 'Data berhasil diperbarui');
@@ -184,9 +183,8 @@
         } else {
             const result = await response.json();
             showToast('error', "Error", result.message);
-        }
-
-    }
+        };
+    };
 
     function destroy(id) {
         Swal.fire({
@@ -206,7 +204,7 @@
                         'Content-Type': 'application/json',
                         'Authorization': 'Bearer ' + localStorage.getItem('token')
                     }
-                })
+                });
 
                 if (response.status == 200) {
                     showToast('success', "Success", 'Data terminal berhasil dihapus');
@@ -216,10 +214,10 @@
                 } else {
                     const result = await response.json();
                     showToast('error', "Error", result.message);
-                }
-            }
-        })
-    }
+                };
+            };
+        });
+    };
 </script>
 
 @endslot

@@ -1,10 +1,10 @@
-@layout.app({ menu: "Airport"})
+@layout.app({ menu: title})
 @slot('main')
 
 <div x-data="{ showFormCreate: false }">
     {{-- The button to show the form to create a new airport --}}
-    <div class="mb-5" x-on:click="showFormCreate = ! showFormCreate">
-        <button class="w-fit flex items-center gap-2 py-1 pl-2 pr-3 rounded-lg hover:bg-green-200 text-green-600">
+    <div class="mb-5">
+        <button class="w-fit flex items-center gap-2 py-1 pl-2 pr-3 rounded-lg hover:bg-green-200 text-green-600" x-on:click="showFormCreate = ! showFormCreate">
             <img src="/images/icons/add.svg" alt="trash-icon">
             <span>Add</span>
         </button>
