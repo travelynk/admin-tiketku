@@ -87,47 +87,13 @@
                 <td>{{ airport.lat }}</td>
                 <td>{{ airport.long }}</td>
                 <td class="flex gap-2">
-                    <button onclick="showFormEdit('{{ airport.id }}')" class="rounded">
+                    <button onclick="window.location.href= '/admin/airports/edit/{{ airport.id }}'" class="rounded">
                         <img src="/images/icons/edit.svg" alt="trash-icon" class="p-1 rounded-xl hover:bg-blue-200">
                     </button>
                     <button onclick="destroy({{ airport.id }})" class="rounded">
                         <img src="/images/icons/trash.svg" alt="trash-icon" class="p-1 rounded-xl hover:bg-red-200">
                     </button>
                 </td>
-            </tr>
-            <tr id="form-airport-{{ airport.id }}" class="hidden">
-                <td>1</td>
-                <td colspan="1">
-                    <input type="text" name="edit-airport-code" id="edit-airport-code" autocomplete="edit-airport-code" value="{{ airport.code }}" placeholder="Input airport code"
-                    class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6">
-                </td>
-                <td colspan="1">
-                    <input type="text" name="edit-airport-name" id="edit-airport-name"
-                        autocomplete="edit-airport-name" value="{{ airport.name }}" placeholder="Input airport name"
-                        class="block w-full rounded-md bg-white px-1 py-1.5 text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6">
-                </td>
-                <td colspan="2">
-                    @!component('components/ui/airport/select-city', { id: "edit-select-city", name:
-                    "edit-city", cities, selectedItem: airport.city.code })
-                </td>
-                <td>
-                    <input type="number" step="0.000001" name="edit-airport-latitude" id="edit-airport-latitude" autocomplete="edit-airport-latitude" value="{{ airport.lat }}"
-                    class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6">
-                </td>
-                <td>
-                    <input type="number" step="0.000001" name="edit-airport-longitude" id="edit-airport-longitude" autocomplete="edit-airport-longitude" value="{{ airport.long }}"
-                        class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6">
-                </td>
-                <td>
-                    <div class="flex gap-1 h-fit">
-                        <button type="button"  onclick="update('{{ airport.id }}')"
-                            class="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Save</button>
-                        <button type="button"
-                            class="rounded-md hover:bg-gray-200 px-3 py-2 text-sm font-semibold text-black shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-300"
-                            onclick="showDataAirport('{{ airport.id }}')">Cancel</button>
-                    </div>
-                </td>
-                <td class="hidden">input test</td>
             </tr>
             @end
 
@@ -161,56 +127,6 @@
 
         if (response.status == 201) {
             showToast('success', "Success", 'Data berhasil disimpan');
-            setTimeout(() => {
-                window.location.href = '/admin/airports';
-            }, 1000);
-        } else {
-            const result = await response.json();
-            showToast('error', "Error", result.message);
-        };
-
-    };
-
-    function showFormEdit(id) {
-        const airportRow = document.getElementById('data-airport-' + id);
-        const airportForm = document.getElementById('form-airport-' + id);
-        airportRow.classList.add('hidden');
-        airportForm.classList.remove('hidden');
-    };
-
-    function showDataAirport(id) {
-        const airportRow = document.getElementById('data-airport-' + id);
-        const airportForm = document.getElementById('form-airport-' + id);
-        airportRow.classList.remove('hidden');
-        airportForm.classList.add('hidden');
-    };
-
-    async function update(id) {
-        const code = document.getElementById('edit-airport-code').value;
-        const name = document.getElementById('edit-airport-name').value;
-        const lat = document.getElementById('edit-airport-latitude').value;
-        const long = document.getElementById('edit-airport-longitude').value;
-        const cityCode = document.getElementById('edit-select-city').value;
-
-        const data = {
-            code,
-            name,
-            lat,
-            long,
-            cityCode
-        };
-
-        const response = await fetch('{{ api }}/api/v1/airports/' + id, {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': 'Bearer ' + localStorage.getItem('token')
-            },
-            body: JSON.stringify(data),
-        });
-
-        if (response.status == 200) {
-            showToast('success', "Success", 'Data berhasil diperbarui');
             setTimeout(() => {
                 window.location.href = '/admin/airports';
             }, 1000);
