@@ -1,13 +1,13 @@
-@layout.app({menu: "Dashboard"})
+@layout.app({menu: title})
 @slot('main')
 <!-- Content Card -->
 <div class="flex gap-3 justify-between bg-white">
     @!component('components/ui/dashboard/card', { title: "City/Country", path: "/admin/cities", icon: "cities.svg" ,
-    data: "15/5" })
+    data: citiesQty + "/" + countriesQty })
     @!component('components/ui/dashboard/card', { title: "Airline", path: "/admin/airlines", icon: "airline.svg" , data:
-    "10" })
+    airlinesQty })
     @!component('components/ui/dashboard/card', { title: "Flight", path: "/admin/flights", icon: "flight.svg" , data:
-    "25" })
+    flightsQty })
 </div>
 
 <!-- Content Informasi -->
@@ -17,27 +17,17 @@
             <span>Information User</span></div>
         <div class="flex justify-center">
             <div class="px-8">
-                <img class="rounded-full shadow-md border p-2" src="/images/logo.png" width="75px">
-                <p class="pt-2 text-center text-brainCore font-semibold">fulan</p>
-                <p class="text-center text-brainCore font-semibold">admin</p>
+                <img class="rounded-full shadow-md border p-1" src="/images/logo.png" width="55px">
             </div>
             <div class="pb-10">
                 <table class="table table-auto border-collapse border">
                     <tr>
                         <td class="border w-52">Username</td>
-                        <td class="border w-52">Fulan</td>
+                        <td class="border w-52">{{ user.name }}</td>
                     </tr>
                     <tr>
                         <td class="border">Email</td>
-                        <td class="border">fulan@gmail.com</td>
-                    </tr>
-                    <tr>
-                        <td class="border">Gender</td>
-                        <td class="border">Laki</td>
-                    </tr>
-                    <tr>
-                        <td class="border">Phone Number</td>
-                        <td class="border">628</td>
+                        <td class="border">{{ user.email }}</td>
                     </tr>
                 </table>
             </div>
