@@ -30,8 +30,6 @@ export const edit = async (req, res, next) => {
             api
         };
 
-        console.log(city.code)
-
         res.edge('pages/city/edit', data);
     } catch (error) {
         next(error)
