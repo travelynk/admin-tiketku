@@ -9,6 +9,7 @@ import cityRouter from './city/routes.js';
 import flightRouter from './flight/routes.js';
 import userRouter from './user/routes.js';
 import voucherRouter from './voucher/routes.js';
+import notificationRouter from './notification/routes.js';
 
 export default (app) => {
     const router = Router();
@@ -31,5 +32,6 @@ export default (app) => {
     flightRouter(router);
     userRouter(router);
     voucherRouter(router);
+    notificationRouter(router);
 
 };

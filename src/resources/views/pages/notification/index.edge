@@ -1,0 +1,152 @@
+@layout.app({ menu: title})
+@slot('main')
+
+<div x-data="{ showFormCreate: false }">
+    {{-- The button to show the form to create a new notification --}}
+    <div class="mb-5">
+        <button class="w-fit flex items-center gap-2 py-1 pl-2 pr-3 rounded-lg hover:bg-green-200 text-green-600" x-on:click="showFormCreate = ! showFormCreate">
+            <img src="/images/icons/add.svg" alt="trash-icon">
+            <span>Add</span>
+        </button>
+    </div>
+
+    {{-- The form to create a new notification --}}
+    <div x-show="showFormCreate" class="mb-5 pb-5 flex gap-1 items-end border-b border-gray-300">
+        <div class="flex gap-2 w-11/12 px-2">
+            <div class="w-full">
+                <label for="notification-type" class="block text-sm/6 font-medium text-gray-900">Type</label>
+                <div class="mt-1">
+                    @!component('components/ui/notification/select-type', { id: "notification-type", name: "notification-type" })
+                </div>
+            </div>
+
+            <div class="w-full">
+                <label for="notification-title" class="block text-sm/6 font-medium text-gray-900">Name</label>
+                <div class="mt-1">
+                    <input type="text" name="notification-title" id="notification-title" autocomplete="notification-title"
+                        class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6">
+                </div>
+            </div>
+
+            <div class="w-full">
+                <label for="notification-message" class="block text-sm/6 font-medium text-gray-900">Message</label>
+                <div class="mt-1">
+                    <input type="text" name="notification-message" id="notification-message" autocomplete="notification-message"
+                        class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6">
+                </div>
+            </div>
+
+        </div>
+        <div class="flex gap-1 h-fit">
+            <button type="button" x-on:click="showFormCreate = ! showFormCreate, store()"
+                class="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Save</button>
+            <button type="button"
+                class="rounded-md hover:bg-gray-200 px-3 py-2 text-sm font-semibold text-black shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-300"
+                x-on:click="showFormCreate = ! showFormCreate">Cancel</button>
+        </div>
+    </div>
+
+    {{-- The table to list all notifications --}}
+    <table class="myTable display" style="width:100%">
+        <thead>
+            <tr>
+                <th>No</th>
+                <th>Type</th>
+                <th>Title</th>
+                <th>Message</th>
+                <th>Created At</th>
+                <th>Updated At</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @each((notification, index) in notifications)
+            <tr>
+                <td>{{ index + 1 }}</td>
+                <td>{{ notification.type }}</td>
+                <td>{{ notification.title }}</td>
+                <td>{{ notification.message }}</td>
+                <td>{{ notification.createdAt }}</td>
+                <td>{{ notification.updatedAt }}</td>
+                <td class="flex gap-2">
+                    <button onclick="destroy({{ notification.id }})" class="rounded">
+                        <img src="/images/icons/trash.svg" alt="trash-icon" class="p-1 rounded-xl hover:bg-red-200">
+                    </button>
+                </td>
+            </tr>
+            @end
+
+    </table>
+</div>
+
+<script>
+    async function store() {
+        const type = document.getElementById('notification-type').value;
+        const title = document.getElementById('notification-title').value;
+        const message = document.getElementById('notification-message').value;
+
+        const data = {
+            type,
+            title,
+            message
+        };
+
+        const response = await fetch('{{ api }}/api/v1/notifications', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + localStorage.getItem('token')
+            },
+            body: JSON.stringify(data),
+        });
+
+        if (response.status == 201) {
+            showToast('success', "Success", 'Data berhasil disimpan');
+            setTimeout(() => {
+                window.location.href = '/admin/notifications';
+            }, 1000);
+        } else {
+            const result = await response.json();
+            showToast('error', "Error", result.message);
+        };
+
+    };
+
+    function destroy(id) {
+        Swal.fire({
+            title: 'Kamu yakin ingin menghapus data notification ini?',
+            text: "Kamu tidak akan bisa mengembalikan data ini!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Ya, hapus notification!',
+            cancelButtonText: 'Batal'
+        }).then(async (result) => {
+            if (result.isConfirmed) {
+                const response = await fetch('{{ api }}/api/v1/notifications/' + id + "/soft-delete", {
+                    method: 'PATCH',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Bearer ' + localStorage.getItem('token')
+                    },
+                    body: JSON.stringify({userId: null}),
+                });
+
+                if (response.status == 200) {
+                    showToast('success', "Success", 'Data notification berhasil dihapus');
+                    setTimeout(() => {
+                        window.location.href = '/admin/notifications';
+                    }, 1000);
+                } else {
+                    const result = await response.json();
+                    showToast('error', "Error", result.message);
+                };
+            };
+        });
+    };
+
+</script>
+
+@endslot
+@end
