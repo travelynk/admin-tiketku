@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>yooo</h1>
+    <script>
+        const codeParams = new URLSearchParams(window.location.search);
+        const code = codeParams.get('code');
+        console.log(code);
+        window.opener.postMessage({ code }, '*');
+        //window.close();
+    </script>
+</body>
+</html>

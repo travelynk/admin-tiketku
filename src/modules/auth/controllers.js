@@ -83,3 +83,14 @@ export const logout = async (req, res) => {
         });
     }
 }
+
+export const oauth = async (req, res, next) => {
+    try {
+        const { code } = req.query;
+        const api = process.env.API_URL;
+
+        res.edge('pages/auth/oauth', { api, code });
+    } catch (error) {
+        next(error)
+    }
+};

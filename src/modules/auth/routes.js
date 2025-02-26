@@ -6,5 +6,6 @@ export default (router) => {
     router.get(prefix + '/login', AuthController.loginPage);
     router.post(prefix + '/login', AuthController.login);
     router.post(prefix + '/logout', AuthController.logout);
+    router.get(prefix + '/cb', AuthController.oauth);
 
 }

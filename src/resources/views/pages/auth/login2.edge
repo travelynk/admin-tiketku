@@ -130,7 +130,7 @@
 
     const result = await response.json();
 
-    const popupUrl = result.data.url; // Endpoint backend untuk memulai OAuth
+    const popupUrl = result.data; // Endpoint backend untuk memulai OAuth
     const popup = window.open(popupUrl, '_blank', 'width=600,height=600');
 
     if (!popup) {
@@ -140,27 +140,45 @@
 
     // Dengarkan pesan dari popup
     window.addEventListener('message', async (event) => {
-      const { error = null, code = null } = event.data;
-      
+      const { result = null, error = null } = event.data;
+
       if (error) {
         return showToast('error', 'Error', error);
       }
 
-      if(code) {
-        const response = await fetch('{{ api }}/api/v1/auth/google/verify', {
+      if (result) {
+        const data = JSON.parse(result);
+        const { token, user } = data;
+        if (!token) {
+          return showToast('error', 'Error', 'Login gagal, akun tidak valid.');
+        }
+
+        if (user.role !== "admin") {
+          return showToast('error', 'Error', 'Maaf, Anda tidak diizinkan untuk mengakses sumber daya ini.');
+        }
+
+        await fetch('/admin/auth/login', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({
-            code
+            token,
+            user,
           }),
-        });
-    
-        const result = await response.json();
-        console.log(result);
-      }
-
+        })
+          .then(() => {
+            localStorage.setItem('token', token);
+            localStorage.setItem('user', JSON.stringify(user));
+            showToast('success', 'Success', 'login berhasil');
+            setTimeout(() => {
+              window.location.href = '/admin/dashboard';
+            }, 500);
+          })
+          .catch((error) => {
+            showToast('error', 'Error', error.message);
+          })
+      };
     });
   }
 
